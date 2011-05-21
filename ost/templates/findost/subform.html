@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>FindOST.com | Subscribe</title>
+	</head>
+	<body>
+		<section id="intro">
+			<a href='/home'><div id='header' class='center'></div></a>
+		</section>
+		<h3>Create a new user account</h3>
+		<h2>Enter the following fields</h2>
+		
+		{% if error %}
+		<div id='error'>{{error}}<div>
+		{% endif %}
+			
+		<br/>
+		<form action='/subscribe' method='post' name='subform' id='subform'>
+		<p>
+			<label for="username">User Name</label>
+			<input name="username" id="username" type="text" required />
+			
+			<label for="passwd">Password</label>
+			<input name="passwd" id="passwd" type="password" required />
+			
+			<label for="confpasswd">Confirm Password</label>
+			<input name="confpasswd" id="confpasswd" type="password" required />
+		
+			<label for="mail">Mail Address</label>
+			<input name="mail" id="mail" type="email" required/>
+			
+			<input type="submit" value="Confirm"/>
+		</p>
+	</form>
+		
+		
+	</body>
+</html>
+

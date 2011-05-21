@@ -21,4 +21,6 @@ urlpatterns = patterns('',
 	(r'^findost/show/details/(?P<id>\d+)$','findost.views.showdetails'),
 	(r'^findost/(?P<kind>[a-z]+)/details/(?P<id>\d+)$','findost.views.details'),
 	(r'^findost/show/details/(?P<id>\d+)/episodes$','findost.views.loadepisodes'),
+	(r'^login$','findost.views.login'),
+	(r'^subscribe$','findost.views.subscribe'),
 )

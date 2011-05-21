@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<script type="text/javascript" src="/static/jquery.js"></script>
+		<script type="text/javascript" src="/static/application.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="/static/style.css" />
+		<title>FindOST.com | Edit</title>
+	</head>
+	<body>
+		
+		<h2>Edit the information</h2>
+		<br/>
+		<form action='save' name="edit" id="edit" method="post">
+			{% csrf_token %}
+			
+			{% if obj.show.title %}
+			<p>
+				Show : {{obj.show.title}}
+				<div>season : {{obj.seasonnb}}, episode : {{obj.number}}</div>
+			</p>		
+			{% endif %}
+			
+			<label for="title">Title</label>
+			<input name="title" id="title" type="text" value="{{obj.title}}" required />
+			
+			<br/>
+			
+			
+			<label for="otitle">Original Title</label>
+			{% if obj.otitle %}
+			<input name="otitle" id="otitle" type="text" value="{{obj.otitle}}" />
+			{% else %}
+			<input name="otitle" id="otitle" type="text" />			
+			{% endif %}
+			
+			<br/>
+			
+			<div id="actors">
+			<p>Actors</p>
+				{% for actor in obj.main_actors.all %}
+				<input name="actor{{actor.id}}" id="actor{{actor.id}}" type="text" value="{{actor.name}}" /><br/>
+				{% endfor %}
+				
+				{% for actor in obj.show.main_actors.all %}
+				<input name="actor{{actor.id}}" id="actor{{actor.id}}" type="text" value="{{actor.name}}" /><br/>
+				{% endfor %}
+			
+				<div class="actor">
+					<input name="newactor1" id="newactor1" type="text"/>
+				</div>
+			</div>
+			
+			<br/>
+			
+			<div id="songs">
+			<p>Songs</p>			
+				{% for song in obj.songs.all %}
+				<input name="songtitle{{song.id}}" id="songtitle{{song.id}}" type="text" value="{{song.title}}" /><span>by</span><input name="songartist{{song.id}}" id="songartist{{song.id}}" type="text" value="{{song.artist}}" /><br/>
+				{% endfor %}
+			
+				<div class="song">
+					<input name="newsongtitle1" id="newsongtitle1" type="text"/><span>by</span><input name="newsongartist1" id="newsongartist1" type="text"/>
+				</div>
+			</div>
+			
+			<br/>
+			
+			<div>
+			<input type='submit' value='Save Changes'/>
+			</div>
+		</form>
+	
+	</body>
+</html>

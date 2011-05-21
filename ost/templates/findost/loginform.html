@@ -1,10 +1,13 @@
 <form action='/login' method='post' name='loginform' id='loginform'>
+	{% csrf_token %}
 	<p>
 		<label for="username">User Name</label>
 		<input name="username" id="username" type="text" required />
 		
 		<label for="passwd">Password</label>
 		<input name="passwd" id="passwd" type="password" required />
+		
+		<input name="path" id="path" type="hidden" value="{{path}}" />
 		
 		<input type="submit" value="log in"/>
 	</p>

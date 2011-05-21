@@ -7,12 +7,30 @@
 		<title>FindOST.com | {{kind}} search</title>
 	</head>
 	<body>
-		<a href='/home'><div id='header'></div></a>
+		<header>
+			<a href='/home'><div id='header' class='center'></div></a>
+		</header>
+		
+		<nav>
+			<div id='menu'>
+				<ul>
+					{% if isauth %}
+					<li><a href="/logout">Log out</a></li>
+					{% else %}
+					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
+					<li><a href="/showsubscribe">New User</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		<br/>
 	
 		<div id='searchdiv'>
 			<form name="form">
 				{% csrf_token %}
+				<p>
 				<input type="text" autocomplete="off" id="search" placeholder="type the title of a {{kind}}" onkeyup='display()'></input>
+				</p>
 			</form>
 			<div id='options'>			
 			</div>	
@@ -28,6 +46,11 @@
 			$(document).ready(function(){
 				$('body').css('width',$(window).width);
 			})
+		</script>
+		<script>
+			function showlogin(){
+				$('#loginform').load('/showlogin?path=' + encodeURIComponent('{{path}}'));
+			}
 		</script>
  
 	</body>

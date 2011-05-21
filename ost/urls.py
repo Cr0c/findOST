@@ -21,8 +21,11 @@ urlpatterns = patterns('',
 	(r'^findost/show/details/(?P<id>\d+)$','findost.views.showdetails'),
 	(r'^findost/(?P<kind>[a-z]+)/details/(?P<id>\d+)$','findost.views.details'),
 	(r'^findost/show/details/(?P<id>\d+)/episodes$','findost.views.loadepisodes'),
-	(r'^login$','findost.views.login'),
+	(r'^login$','findost.views.log_in'),
 	(r'^subscribe$','findost.views.subscribe'),
 	(r'^showlogin$','findost.views.showlogin'),
-	(r'^showsubscribe$','findost.views.showsubscribe')
+	(r'^showsubscribe$','findost.views.showsubscribe'),
+	(r'^logout$','findost.views.log_out'),
+	(r'^findost/(?P<kind>[a-z]+)/details/(?P<id>\d+)/edit$','findost.views.edit'),
+	(r'^findost/(?P<kind>[a-z]+)/details/(?P<id>\d+)/save$','findost.views.savechanges'),
 )

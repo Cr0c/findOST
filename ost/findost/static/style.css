@@ -57,6 +57,27 @@ p {
     -webkit-border-radius: 4px;
 }
 
+nav ul {  
+	margin: 0 auto;  
+	width: 940px;  
+	list-style: none;
+}
+	
+nav ul li {
+	float: left;  
+}
+
+nav ul li, nav ul li a {  
+	display: block;  
+    margin-right: 20px;  
+    width: 140px;  
+    font-size: 14px;  
+    line-height: 44px;  
+    text-align: center;  
+    text-decoration: none;  
+    color: #888;  
+}
+
 a img {
 	border:none;
 

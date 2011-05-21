@@ -12,7 +12,9 @@
 		<div id='searchdiv'>
 			<form name="form">
 				{% csrf_token %}
+				<p>
 				<input type="text" autocomplete="off" id="search" placeholder="type the title of a {{kind}}" onkeyup='display()'></input>
+				</p>
 			</form>
 			<div id='options'>			
 			</div>	

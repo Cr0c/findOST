@@ -17,6 +17,7 @@
 			
 		<br/>
 		<form action='/subscribe' method='post' name='subform' id='subform'>
+			{% csrf_token %}
 		<p>
 			<label for="username">User Name</label>
 			<input name="username" id="username" type="text" required />

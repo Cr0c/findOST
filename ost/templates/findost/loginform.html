@@ -1,4 +1,5 @@
 <form action='/login' method='post' name='loginform' id='loginform'>
+	{% csrf_token %}
 	<p>
 		<label for="username">User Name</label>
 		<input name="username" id="username" type="text" required />

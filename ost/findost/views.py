@@ -20,7 +20,7 @@ def login(request):
             login(request, user)
         else:
             # Return a 'disabled account' error message
-	return HttpResponseRedirect('/home')
+	return HttpResponseRedirect('/home',  context_instance=RequestContext(request))
 
 def subscribe(request):
 	username=request.POST['username']
@@ -31,14 +31,14 @@ def subscribe(request):
 	mailalreadyused = User.objects.filter(email__exact=mail)
 	if(mailalreadyused):
 		error = 'this mail address is already used by another user'
-		return render_to_response('findost/subscribe.html', {'error': error})
+		return render_to_response('findost/subscribe.html', {'error': error}, context_instance=RequestContext(request))
 	elif(passwd != confpasswd):
 		error = "you didn't type twice the same password"
-		return render_to_response('findost/subscribe.html', {'error': error})
+		return render_to_response('findost/subscribe.html', {'error': error}, context_instance=RequestContext(request))
 	else:
 		user = User.objects.create_user(username,mail,passwd)
 		login(request, user)
-		return HttpResponseRedirect('/home')
+		return HttpResponseRedirect('/home', context_instance=RequestContext(request))
 
 def search(request,kind):
 	if(kind == 'film' or kind == 'show'):

@@ -23,4 +23,6 @@ urlpatterns = patterns('',
 	(r'^findost/show/details/(?P<id>\d+)/episodes$','findost.views.loadepisodes'),
 	(r'^login$','findost.views.login'),
 	(r'^subscribe$','findost.views.subscribe'),
+	(r'^showlogin$','findost.views.showlogin'),
+	(r'^showsubscribe$','findost.views.showsubscribe')
 )

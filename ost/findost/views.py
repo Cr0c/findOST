@@ -7,27 +7,39 @@ from django.http import Http404,HttpResponseRedirect
 def home(request):
 	lastfilms = Film.objects.order_by('-updatedon')[:5]
 	lastepisodes = Episode.objects.order_by('-updatedon')[:5]
-	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes})
+	if request.user.is_authenticated():
+		message="bonjour" + request.user.username
+	else:
+		message="You are not logged in"
+	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes, 'message':message})
 
+def showlogin(request):
+	if(request.is_ajax()):
+		return render_to_response('findost/loginform.html')
+	
 def login(request):
 	username=request.POST['username']
 	passwd = request.POST['passwd']
-	#vérifier qu'il n'y a pas de caractères spéciaux
+	#verifier qu'il n'y a pas de caracteres speciaux
 
 	user = authenticate(username=username,password=passwd)
-	 if user is not None:
-        if user.is_active:
-            login(request, user)
-        else:
-            # Return a 'disabled account' error message
+	if user is not None:
+		if user.is_active:
+			login(request, user)
+		else:
+			pass
+			# Return a 'disabled account' error message
 	return HttpResponseRedirect('/home')
+	
+def showsubscribe(request):
+	return render_to_response('findost/subform.html')
 
 def subscribe(request):
 	username=request.POST['username']
 	passwd = request.POST['passwd']
 	confpasswd=request.POST['confpasswd']
 	mail = request.POST['mail']
-	#vérifier qu'il n'y a pas de caractères spéciaux
+	#verifier qu'il n'y a pas de caracteres speciaux
 	mailalreadyused = User.objects.filter(email__exact=mail)
 	if(mailalreadyused):
 		error = 'this mail address is already used by another user'

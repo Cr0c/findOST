@@ -7,10 +7,19 @@
 		<title>FindOST.com | Home</title>
 	</head>
 	<body>
-		<section id="intro">
+		<header>
 			<a href='/home'><div id='header' class='center'></div></a>
-		</section>
-		<div id='menu'></div>
+		</header>
+		
+		<nav>
+			<div id='menu'>
+				<ul>
+					{{message}}
+					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
+					<li><a href="/showsubscribe">New User</a></li>
+				</ul>
+			</div>
+		</nav>
 		
 		<section id="searchzone">
 		<div class='finddiv center'><h2>Find an OST</h2></div>
@@ -67,9 +76,9 @@
 			</p>
 		</div>
 		<script>
-			$(document).ready(function(){
-				$('body').css('width',$(window).width);
-			})
+			function showlogin(){
+				$('#loginform').load('/showlogin');
+			}
 		</script>
 	</body>
 </html>

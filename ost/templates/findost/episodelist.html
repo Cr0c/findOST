@@ -1,0 +1,9 @@
+{% if episodes %}
+<ul class='eplist'>
+	{% for episode in episodes %}
+		<li><a href='/findost/episode/details/{{episode.id}}'>episode {{episode.number}}</a></li>
+	{%endfor %}
+</ul>
+{% else %}
+<p>No episodes for this season<p>
+{% endif %}

@@ -1,0 +1,19 @@
+<ul>
+	{% for i in range(obj.nbseason) %}
+		<li>
+			<a href="#" onclick='loadepisodes({{i}})'>season {{i}}</a>
+			<div id='season{{i}}' class = 'notloaded' ></div>
+		</li>
+	{% endfor %}
+</ul>	
+<script>
+	function loadepisodes(i){
+		divdetails = $('#season' + i);
+		if(divdetails.hasClass('notloaded')){
+			divdetails.load('show/episodedetails/'+i);
+			divdetails.removeClass('notloaded');
+		}
+		divdetails.toggle('slow');
+		return false;
+	}	
+</script>

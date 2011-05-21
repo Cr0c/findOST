@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>Untitled Document</title>
+	</head>
+	<body>
+		
+		<ul>
+		{% if obj.show.title %}
+			<li>
+				Show : {{obj.show.title}}
+				<div>season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
+				</li>
+		{% endif %}
+		{% if obj.title %}
+			<li>title : {{obj.title}}</li>
+		{% endif %}
+		{% if obj.otitle %}
+			<li>original title : {{obj.otitle}}</li>
+		{% endif %}
+		{% if obj.main_actors.all %}
+			<li>
+				main actors :
+				<ul>
+					<li>b</li>
+					{% for actor in obj.main_actors.all %}
+						<li>{{actor.name}}</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endif %}
+		{% if obj.show.main_actors.all %}
+			<li>
+				main actors :
+				<ul>
+					{% for actor in obj.show.main_actors.all %}
+						<li>{{actor.name}}</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endif %}
+		{% if obj.songs.all %}
+			<li>
+				Original Soundtrack :
+				<ul>
+					{% for song in obj.songs.all %}	
+						<li>{{song.title}} by {{song.artist}}</li>										
+					{%endfor %}
+				</ul>
+			</li>
+			{%if songsidstring %}
+				<li> <p>listen !</p>
+					<object width="250" height="400">
+					<param name="movie" value="http://listen.grooveshark.com/widget.swf" />
+					<param name="wmode" value="window" />
+					<param name="allowScriptAccess" value="always" />
+					<param name="flashvars" value="hostname=cowbell.grooveshark.com&songIDs={{songsidstring}}&style=metal&p=0" />
+					<embed src="http://listen.grooveshark.com/widget.swf" type="application/x-shockwave-flash" width="250" height="400"	flashvars="hostname=cowbell.grooveshark.com&songIDs={{songsidstring}}&style=metal&p=0" allowScriptAccess="always" wmode="window" />
+					</object>
+				</li>	
+			{% endif %}	
+					
+		{% endif %}
+		{% if obj.updatedon %}
+			<li>
+				updated on : {{obj.updatedon}}
+			</li>
+		{% endif %}
+		</ul>
+	</body>
+</html>

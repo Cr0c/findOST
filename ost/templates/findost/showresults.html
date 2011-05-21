@@ -1,0 +1,11 @@
+<div>
+	{% if results_set %}
+	<ul>
+		{% for result in results_set %}
+		<li><a href='show/details/{{result.id}}' name ='{{result.id}}'>{{ result.title }}</a><div id='details{{result.id}}' class = 'notloaded' ></div></li>
+		{% endfor %}	
+	</ul>
+	{% else %}
+	<p>No matching shows found</p>
+	{% endif %}
+</div>

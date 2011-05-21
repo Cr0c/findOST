@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<script type="text/javascript" src="/static/jquery.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="/static/style.css" />
+		<title>FindOST.com | {{show.title}}</title>
+	</head>
+	<body>
+		<a href='/home'><div id='header'></div></a>
+		<div>{{show.title}}</div>
+		<div>
+			<ul>
+			{% for i in nbseason %}
+				<li><a href='#' onclick='showepisodes({{i}});return false;'>season {{i}}</a><div id='season{{i}}'  class='notloaded' ></div></li>
+			{% endfor %}
+			</ul>
+		</div>
+		<script>
+			function showepisodes(i){
+				if ($('#season'+i).hasClass('notloaded')){
+					$('#season'+i).load('{{show.id}}/episodes?season=' + i);
+					$('#season'+i).removeClass('notloaded');
+					$('#season'+i).toggle('slow');
+					
+						
+				}
+			
+				$('#season'+i).toggle('slow');
+						
+			}
+		</script>
+		<script>
+			$(document).ready(function(){
+				$('body').css('width',$(window).width);
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>FindOST.com</title>
+	</head>
+	<body>
+		<header></header>
+		<h1>Welcome on FindOST.com</h1>
+		<div>
+			<p>Latest movies updated</p>
+			<p>
+				<ul id="latest">
+				
+				{% for film in lastfilms %}
+					<li><a href="/findost/film/details/{{ film.id }}" >{{ film.title }}</a></li>
+				{% endfor %}
+				</ul>
+			</p>
+		</div>
+		<div>
+			<a href='findost/film'>find a film's OST</a>
+		</div>
+		<div>
+			<a href='findost/show'>find a show's OST</a>
+		</div>
+		<div>
+			<p>Latest episodes updated</p>
+			<p>
+				<ul id="latest">
+				{% for episode in lastepisodes %}
+					<li><a href="/findost/show/details/{{episode.id}}" >{{ episode.show.title }}, season {{ episode.seasonnb }} episode {{ episode.number }}</a></li>
+				{% endfor %}
+				</ul>
+			</p>
+		</div>
+	</body>
+</html>

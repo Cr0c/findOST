@@ -1,0 +1,11 @@
+<div>
+	{% if results_set %}
+	<ul>
+		{% for result in results_set %}
+		<li><a href='{{kind}}/details/{{result.id}}'>{{ result.title }}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p>No matching {{kind}}s found</p>
+	{% endif %}
+</div>

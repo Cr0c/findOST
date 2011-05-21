@@ -1,0 +1,24 @@
+<div>
+	{% if results_set %}
+	<ul>
+		{% for result in results_set %}
+		<li><a id='details' href='{{kind}}/details/{{result.id}}' name ='{{result.id}}'>{{ result.title }}</a><div id='details{{result.id}}' class = 'notloaded' ></div></li>
+		{% endfor %}	
+	</ul>
+	{% else %}
+	<p>No matching {{kind}}s found</p>
+	{% endif %}
+</div>
+<script>
+	function showdetails(id){
+		if({{kind}} = "show"){
+			divdetails = $('#details' + id);
+			if(divdetails.hasClass('notloaded')){
+				divdetails.load('{{kind}}/seasondetails/'+id);
+				divdetails.removeClass('notloaded');
+			}
+			divdetails.toggle('slow');
+			
+		}	
+	}
+</script>

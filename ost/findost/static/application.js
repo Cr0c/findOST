@@ -8,7 +8,7 @@
 			
 			// unbind last object and add focusout event
 			objects.last().children('input[type=text]')
-												.unbind('keydown');
+												.unbind('input');
 												
 			// duplicate last one and bind keypress
 			objects.last().clone().appendTo(t)
@@ -24,7 +24,7 @@
 										});
 								 })
 								 .val('')
-								 .keydown(add_field)
+								 .bind('input', add_field);
 			// add remove link to previous last object
 			objects.last().appendRemoveLink();
 			// update objects
@@ -34,7 +34,7 @@
 		objects.not(':last').appendRemoveLink();
 														
 		objects.last().children('input[type=text]')
-											.keydown(add_field);
+											.bind('input', add_field);
 		return t;
 	}
 	
@@ -54,7 +54,3 @@
 	}
 })(jQuery);
 
-$(document).ready(function() {
-	$("#actors").autoAddingTextFields("actor");
-	$("#songs").autoAddingTextFields("song");
-});

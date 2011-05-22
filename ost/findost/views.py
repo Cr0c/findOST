@@ -147,13 +147,14 @@ def savechanges(request,kind,id):
 		obj = get_object_or_404(Episode, pk = id)
 	data = request.POST
 	for key,value in data:
-		if(key='title' and value):
+		if(key=='title' and value):
 			obj.title = value
-		if(key='otitle' and value):
+		if(key=='otitle' and value):
 			obj.otitle = value
-		if(key='director' and value):
+		if(key=='director' and value):
 			obj.director = value
-	raise Http404		
+	raise Http404
+			
 		
 		
 	

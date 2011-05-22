@@ -8,8 +8,27 @@
 		<title>FindOST.com | Edit</title>
 	</head>
 	<body>
+		<header>
+			<a href='/home'><div id='header' class='center'></div></a>
+		</header>
 		
-		<h2>Edit the information</h2>
+		
+		<nav>
+			<div id='menu'>
+				<ul>
+					<li>{{message}}</li>
+					{% if isauth %}
+					<li><a href="/logout">Log out</a></li>
+					{% else %}
+					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
+					<li><a href="/showsubscribe">New User</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		
+		
+		<h2>Edit Information</h2>
 		<br/>
 		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}

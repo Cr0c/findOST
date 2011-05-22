@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<script type="text/javascript" src="/static/jquery.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="/static/style.css" />
+		<title>FindOST.com | Home</title>
+	</head>
+	<body>
+		<header>
+			<a href='/home'><div id='header' class='center'></div></a>
+		</header>
+		
+		
+		<nav>
+			<div id='menu'>
+				<ul>
+					<li>{{message}}</li>
+					{% if isauth %}
+					<li><a href="/logout">Log out</a></li>
+					{% else %}
+					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
+					<li><a href="/showsubscribe">New User</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+		
+		<section id="searchzone">
+		<div class='finddiv center'><h2>Find an OST</h2></div>
+		<div class='finddiv'>
+			<span id='find'><a href='findost/film'>Movie</a></span>
+			<span id='find'><a href='findost/show'>Show</a></span>
+		</div>
+		</section>
+			
+		<div>
+			<h3>Latest movies updated</h3>
+			<p>
+				<ul>
+				{% for film in lastfilms %}
+					<li>
+						
+						<div class='latest'>
+							{% if film.imageurl %}
+							<div><img id='{{film.id}}' src='{{film.imageurl}}'/></div>
+							{% else %}
+							<div><img id='{{film.id}}' src='/static/img/unknown.jpg'/></div>
+							{% endif %}
+							<div class='description'>
+							<a href="/findost/film/details/{{film.id}}" >{{ film.title }}</a><br/>
+							came out on : {{film.cameouton}}
+							</div>	
+						</div>
+					</li>
+				{% endfor %}
+				</ul>
+			</p>
+		</div>
+		
+		<div>
+			<h3>Latest episodes updated</h3>
+			<p>
+				<ul>
+				{% for episode in lastepisodes %}
+					<li>
+						<div class='latest'>
+							{% if episode.imageurl %}
+							<div class="table thumb"><img id='{{episode.show.id}}' src='{{episode.imageurl}}'/></div>
+							{% else %}
+							<div class='table thumb'><img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/></div>
+							{% endif %}
+							<div class='description'>
+								<a href="/findost/episode/details/{{episode.id}}" >{{ episode.show.title }}</a><br/>
+								season {{ episode.seasonnb }} episode {{ episode.number }}
+							</div>
+						</div>
+					</li>
+				{% endfor %}
+				</ul>
+			</p>
+		</div>
+		<script>
+			function showlogin(){
+				$('#loginform').load('/showlogin?path=' + encodeURIComponent('{{path}}'));
+			}
+		</script>
+	</body>
+</html>

@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render_to_response
-from findost.models import Film, Show, Episode, Song
+from findost.models import Film, Show, Episode, Song, Artist,Actor
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import Http404,HttpResponseRedirect
@@ -223,20 +223,74 @@ def checktrack(request,kind,gid,id):
 def savechanges(request,kind,id):
 	if(kind == 'film'):
 		obj = get_object_or_404(Film, pk = id)	
+		obj.mainactors.clear()
 	if(kind == 'episode'):
 		obj = get_object_or_404(Episode, pk = id)
+		obj.show.mainactors.clear()
+	
+	obj.songs.clear()
+
 	data = request.POST
-	for key,value in data:
+	songartists = {}
+	songtitles = {}
+
+	for key in data:
+		value = data[key]
+		print('key : ' + key + ' /value : ' + value)
 		for field in obj._meta.fields:
 			if(key == field.name and value):
-				pass
-		if(key=='title' and value):
-			obj.title = value
-		if(key=='otitle' and value):
-			obj.otitle = value
-		if(key=='director' and value):
-			obj.director = value
-	raise Http404
+				obj.__setattr__(field.name , value)
+			if(key.startswith('actor') and value):
+				if(Actor.objects.filter(name=value)):
+					actor = Actor.objects.filter(name=value)[0]
+				else:
+					actor = Actor(name = value)
+					actor.save()
+				if(kind == 'film'):
+					obj.mainactors.add(actor)
+				if(kind == 'episode'):
+					obj.show.mainactors.add(actor)
+			
+		if(key.startswith('songtitle') and value):
+				songtitles[key[9:]] = value
+		if(key.startswith('songartist') and value):
+				songartists[key[10:]] = value
+		
+	for key in songtitles:
+		title = songtitles[key]
+		artistname = songartists[key]
+		if(Artist.objects.filter(name=artistname)):
+			artist = Artist.objects.get(name=artistname)
+		else:
+			artist = Artist(name=artistname)
+			artist.save()
+		if(Song.objects.filter(title=title).filter(artist = artist)):
+			song=Song.objects.filter(title=title).filter(artist = artist)[0]
+		else:
+			song = Song(title=title,artist=artist)
+			song.save()
+		
+		obj.songs.add(song)
+
+	obj.save()
+ 
+#			if(key.startswith('songtitle') and value):
+#				title = value
+#				song = Song(title=value)
+#			if(key.startswith('songartist') and value):
+#				if(Artist.objects.filter(name=value)):
+#					artist = Artist.objects.filter(name=value)
+#				else:
+#					artist = Artist(name = value)
+#					artist.save()
+#				song.artist=artist
+#				if( not Song.objects.filter(title=title).filter(artist=artist)):
+#					song.save()
+#				else:
+#					song= Song.objects.filter(title=title).filter(artist=artist)
+#				obj.songs.add(song)
+#			obj.save()
+	return HttpResponseRedirect('/findost/' + kind + '/details/' + id) 
 		
 		
 	

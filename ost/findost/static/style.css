@@ -84,6 +84,14 @@ nav ul li, nav ul li a {
     color: #888;  
 }
 
+form {
+	padding: 20px;
+}
+
+input {
+	font-size: 40px;
+}
+
 a img {
 	border:none;
 
@@ -203,8 +211,6 @@ a:hover{
 	background: -moz-linear-gradient(top, #882222,#cc9999);
 }
 
-
-
 #content { 
 	margin-top:50px;
 		display: block;	
@@ -212,15 +218,37 @@ a:hover{
   
 #mainContent {  
 	display: block;
-	float: left; 
+	float: left;
+	height: 100px;
     width: 600px;  
-    padding-right: 22px;  
 }  
 
 aside { 
 	display: block;
 	float: right; 
-    display: table-cell;  
     width: 300px;  
 }
+
+#allresults {
+		display: block;
+}
+
+#movieResults {
+	display: block;
+	float: left;
+	width: 280px;
+	padding: 10px;
+}
+
+#showResults {
+	display: block;
+	float: right;
+	width: 280px;
+	padding: 10px;
+}
+
+
+
+
+
 

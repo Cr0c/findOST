@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-import urllib2,string
+import urllib2,string,datetime
 
 
 
@@ -178,7 +178,6 @@ def edit(request,kind,id):
 		
 def checktrack(request,kind,gid,id):
 	if(request.is_ajax()):
-		print("BIATCH")
 		file = open('../DB/ids','a')
 		song = get_object_or_404(Song, pk = id)
 		modtitle = ''
@@ -214,7 +213,6 @@ def checktrack(request,kind,gid,id):
 					file.write(song.title + "_|_" + song.artist.name + "_|_" + songid + "\n")
 					i=6
 				else:
-					print("BIATCH 2")
 					while(Json[ind] != '}'):
 						ind =ind+1
 					ind=ind+1
@@ -223,8 +221,9 @@ def checktrack(request,kind,gid,id):
 						i=i+1
 					else:
 						i=5
+			else:
+				i=5
 		if(i==5):
-			print("BIATCH3")
 			song.songid=-1
 			song.save()
 		file.close()
@@ -233,60 +232,63 @@ def checktrack(request,kind,gid,id):
 		raise Http404
 
 def savechanges(request,kind,id):
-	if(kind == 'film'):
-		obj = get_object_or_404(Film, pk = id)	
-		obj.mainactors.clear()
-	if(kind == 'episode'):
-		obj = get_object_or_404(Episode, pk = id)
-		obj.show.mainactors.clear()
-	
-	obj.songs.clear()
+	isauth = request.user.is_authenticated()
+	if(isauth):			
+		if(kind == 'film'):
+			obj = get_object_or_404(Film, pk = id)	
+			obj.mainactors.clear()
+		if(kind == 'episode'):
+			obj = get_object_or_404(Episode, pk = id)
+			obj.show.mainactors.clear()
+		
+		obj.songs.clear()	
 
-	data = request.POST
-	songartists = {}
-	songtitles = {}
+		data = request.POST
+		songartists = {}
+		songtitles = {}
 
-	for key in data:
-		value = data[key]
-		print('key : ' + key + ' /value : ' + value)
-		for field in obj._meta.fields:
-			if(key == field.name and value):
-				obj.__setattr__(field.name , value)
-			if(key.startswith('actor') and value):
-				if(Actor.objects.filter(name=value)):
-					actor = Actor.objects.filter(name=value)[0]
-				else:
-					actor = Actor(name = value)
-					actor.save()
-				if(kind == 'film'):
-					obj.mainactors.add(actor)
-				if(kind == 'episode'):
-					obj.show.mainactors.add(actor)
+		for key in data:
+			value = data[key]
+			print('key : ' + key + ' /value : ' + value)
+			for field in obj._meta.fields:
+				if(key == field.name and value):
+					obj.__setattr__(field.name , value)
+				if(key.startswith('actor') and value):
+					if(Actor.objects.filter(name=value)):
+						actor = Actor.objects.filter(name=value)[0]
+					else:
+						actor = Actor(name = value)
+						actor.save()
+					if(kind == 'film'):
+						obj.mainactors.add(actor)
+					if(kind == 'episode'):
+						obj.show.mainactors.add(actor)
+				
+			if(key.startswith('songtitle') and value):
+					songtitles[key[9:]] = value
+			if(key.startswith('songartist') and value):
+					songartists[key[10:]] = value
 			
-		if(key.startswith('songtitle') and value):
-				songtitles[key[9:]] = value
-		if(key.startswith('songartist') and value):
-				songartists[key[10:]] = value
-		
-	for key in songtitles:
-		title = songtitles[key]
-		artistname = songartists[key]
-		if(Artist.objects.filter(name=artistname)):
-			artist = Artist.objects.get(name=artistname)
-		else:
-			artist = Artist(name=artistname)
-			artist.save()
-		if(Song.objects.filter(title=title).filter(artist = artist)):
-			song=Song.objects.filter(title=title).filter(artist = artist)[0]
-		else:
-			song = Song(title=title,artist=artist)
-			song.save()
-		
-		obj.songs.add(song)
-
-	obj.save()
-	return HttpResponseRedirect('/findost/' + kind + '/details/' + id) 
-		
+		for key in songtitles:
+			title = songtitles[key]
+			artistname = songartists[key]
+			if(Artist.objects.filter(name=artistname)):
+				artist = Artist.objects.get(name=artistname)
+			else:
+				artist = Artist(name=artistname)
+				artist.save()
+			if(Song.objects.filter(title=title).filter(artist = artist)):
+				song=Song.objects.filter(title=title).filter(artist = artist)[0]
+			else:
+				song = Song(title=title,artist=artist,postedby=request.user.username)
+				song.save()
+			
+			obj.songs.add(song)
+			obj.updatedon=datetime.datetime.now()
+		obj.save()
+		return HttpResponseRedirect('/findost/' + kind + '/details/' + id) 
+	else:
+		raise Http404		
 		
 	
 

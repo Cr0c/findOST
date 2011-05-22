@@ -8,9 +8,9 @@ header, footer, aside, nav, article {
 }
 
 body {
-	/*background-image:url('/static/img/background5.jpg');*/
+	background-image:url('/static/img/mixer_en_cans.jpg');
 	/*background-size: 100%;*/
-	background-color: #eee;
+	/*background-color: #eee;*/
 	background-attachment: fixed;
 	width: 940px;
 	margin: 0 auto;
@@ -86,6 +86,7 @@ nav ul li, nav ul li a {
 
 form {
 	padding: 20px;
+	color: #2754C7;
 }
 
 form #search {
@@ -247,6 +248,9 @@ aside {
 	padding: 10px;
 }
 
+#confirm {
+	padding-left: 120px;
+}
 
 
 

@@ -34,7 +34,9 @@
 			<section>
 				<form name="form">
 					{% csrf_token %}
+					<div id="homeForm">
 					<input type="text" autocomplete="off" id="search" placeholder="Find an OST" onkeyup="display()"></input>
+					</div>
 				</form>
 				<div id="options">
 				</div>

@@ -120,9 +120,11 @@ def find_results_set(query):
 	results_setMovie = Film.objects.all()
 	results_setShow = Show.objects.all()
 	for w in querywords:
-			results_setMovie = results_setMovie.filter(title__contains=w)
-			results_setShow = results_setShow.filter(title__contains=w)
-	return results_setMovie.order_by('title')[0:20], results_setShow.order_by('title')[0:20]
+		results_setMovie = results_setMovie.filter(title__contains=w)
+		results_setShow = results_setShow.filter(title__contains=w)
+	results_setMovie = Film.objects.filter(title__contains=query).update(results_setMovie)
+	results_setShow = Show.objects.filter(title__contains=query).update(results_setShow)
+	return results_setMovie[0:20], results_setShow[0:20]
 
 
 def results(request):
@@ -278,7 +280,7 @@ def savechanges(request,kind,id):
 						obj.mainactors.add(actor)
 					if(kind == 'episode'):
 						obj.show.mainactors.add(actor)
-			if(key=='yearout'):
+			if(key=='yearout' and value):
 				obj.cameouton=datetime.datetime(int(value),1,1)
 			if(key.startswith('songtitle') and value):
 				songtitles[key[9:]] = value

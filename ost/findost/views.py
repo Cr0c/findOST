@@ -81,6 +81,12 @@ def subscribe(request):
 	elif(namealreadyused):
 		error = 'this username is already used'
 		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+	elif(len(username) > 12):
+		error = "Your username is too long! (12 characters maximum)"
+		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+	elif(len(passwd) < 6):
+		error = "Your password is too short! (6 charatcers minimum)"
+		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
 	elif(passwd != confpasswd):
 		error = "you didn't type twice the same password"
 		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
@@ -93,8 +99,12 @@ def subscribe(request):
 def search(request,kind):
 	path = request.path
 	isauth = request.user.is_authenticated()
+	if(isauth):
+		message = "Logged in as " + request.user.username
+	else:
+		message = "You are not logged in"
 	if(kind == 'film' or kind == 'show'):
-		return render_to_response('findost/search.html', {'kind' : kind, 'isauth':isauth, 'path' : path}, context_instance=RequestContext(request))
+		return render_to_response('findost/search.html', {'kind' : kind, 'isauth':isauth, 'path' : path, 'message':message}, context_instance=RequestContext(request))
 	else:
 		raise Http404
 
@@ -127,9 +137,13 @@ def results(request,kind):
 def showdetails(request,id):
 	path = request.path
 	isauth = request.user.is_authenticated()
+	if(isauth):
+		message = "Logged in as " + request.user.username
+	else:
+		message = "You are not logged in"
 	show = get_object_or_404(Show,pk = id)
 	nbseason = range(1, show.nbseason+1)
-	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'path' : path})
+	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'path' : path, 'message':message})
 
 def loadepisodes(request,id):
 	if(request.is_ajax()):
@@ -141,11 +155,15 @@ def loadepisodes(request,id):
 def details(request,kind,id):
 	path = request.path
 	isauth = request.user.is_authenticated()
+	if(isauth):
+		message = "Logged in as " + request.user.username
+	else:
+		message = "You are not logged in"
 	if(kind == 'film'):
 		obj = get_object_or_404(Film, pk = id)
 	if(kind == 'episode'):
 		obj = get_object_or_404(Episode, pk = id)
-	return render_to_response('findost/details.html', {'obj' : obj, 'isauth':isauth, 'path' : path})
+	return render_to_response('findost/details.html', {'obj' : obj, 'isauth':isauth, 'path' : path, 'message':message})
 
 def edit(request,kind,id):
 	isauth = request.user.is_authenticated()

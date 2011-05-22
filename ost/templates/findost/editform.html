@@ -60,6 +60,8 @@
 			</div>
 		</form>
 		
+		<div id='temp' style='visibility:hidden;'></div>
+		<div id='temp2' style='visibility:hidden;'></div>		
 		<script>
 			function fillSong(title,artist){
 				$('.song').children().last().val(artist);
@@ -76,22 +78,30 @@
 				$("#actors").autoAddingTextFields("actor");
 				$("#songs").autoAddingTextFields("song");
 				
-				{% for actor in obj.main_actors.all%}
-					fillActor("{{actor.name}}");
+				{% for actor in obj.mainactors.all%}
+					$('#temp').html("{{actor.name}}");
+					fillActor($('#temp').html());
 					$('.actor').children().last().trigger('input');
 				{% endfor %}
-				{% for actor in obj.show.main_actors.all%}
-					fillActor("{{actor.name}}");
+				{% for actor in obj.show.mainactors.all%}
+					$('#temp').html("{{actor.name}}");
+					fillActor($('#temp').html());
 					$('.actor').children().last().trigger('input');
 				{% endfor %}
 				
 				{% for song in obj.songs.all %}
-					var title = "{{song.title}}";
-					var artist = "{{song.artist.name}}";
+					$('#temp').html("{{song.title}}");
+					$('#temp2').html("{{song.artist.name}}");					
+					
+					
+					var title = $('#temp').html();
+					var artist = $('#temp2').html();
 					fillSong(title,artist);
 					$('.song').children().last().trigger('input');
 				{% endfor %}
 				
+				$('#temp').html('');
+				$('#temp2').html('');
 			}); 
 		</script>
 	

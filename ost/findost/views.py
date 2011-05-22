@@ -209,6 +209,9 @@ def savechanges(request,kind,id):
 		obj = get_object_or_404(Episode, pk = id)
 	data = request.POST
 	for key,value in data:
+		for field in obj._meta.fields:
+			if(key == field.name and value):
+				pass
 		if(key=='title' and value):
 			obj.title = value
 		if(key=='otitle' and value):

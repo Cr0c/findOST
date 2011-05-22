@@ -1,3 +1,8 @@
+{  
+    margin: 0;  
+    padding: 0;  
+}
+
 header, footer, aside, nav, article {  
     display: block;  
 }
@@ -36,6 +41,7 @@ p {
 	color: #2554C7;
 	padding-bottom: 22px;  
 }
+
 
 #header{
 	width: 100%;
@@ -85,7 +91,7 @@ a img {
 
 div {
 	background-color: #ADADAD;
-	/*border: 1px;*/
+	/*border: solid 1px;*/
 	padding-left : 0;
 	-moz-border-radius: 3px;  
     -webkit-border-radius: 3px;
@@ -147,19 +153,13 @@ a{
 a:hover{
 	text-decoration:underline;
 }
+
 .eplist{
 	color : red;	
 	margin-left:20px;
 	padding-left:20px;
 }
 
-#searchdiv {
-	width : 30%;
-	margin-left: 35%;
-	margin-top: 10px;
-	height : 50px;
-	padding : 5px 0px 5px 5px;
-	background-color : #dddddd;
 
 }
 
@@ -176,11 +176,10 @@ a:hover{
 
 .finddiv{
 	height:60px;
-	margin-left:40% 
 }
 
 #find{
-	padding:20px 20px 20px 20px;
+	padding:10px 10px 10px 10px;
 	font-size : 2em; 
 	border: solid black 1px;
 	margin-left :15px;
@@ -203,3 +202,25 @@ a:hover{
 	background : -webkit-gradient(linear, 0 0, 0 100%, from(#882222),to(#cc9999));
 	background: -moz-linear-gradient(top, #882222,#cc9999);
 }
+
+
+
+#content { 
+	margin-top:50px;
+		display: block;	
+}  
+  
+#mainContent {  
+	display: block;
+	float: left; 
+    width: 600px;  
+    padding-right: 22px;  
+}  
+
+aside { 
+	display: block;
+	float: right; 
+    display: table-cell;  
+    width: 300px;  
+}
+

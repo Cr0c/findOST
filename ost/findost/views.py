@@ -278,11 +278,12 @@ def savechanges(request,kind,id):
 						obj.mainactors.add(actor)
 					if(kind == 'episode'):
 						obj.show.mainactors.add(actor)
-				
+			if(key=='yearout'):
+				obj.cameouton=datetime.datetime(int(value),1,1)
 			if(key.startswith('songtitle') and value):
-					songtitles[key[9:]] = value
+				songtitles[key[9:]] = value
 			if(key.startswith('songartist') and value):
-					songartists[key[10:]] = value
+				songartists[key[10:]] = value
 			
 		for key in songtitles:
 			title = songtitles[key]

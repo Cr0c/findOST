@@ -38,11 +38,16 @@
 				Show : {{obj.show.title}}
 				<div>season : {{obj.seasonnb}}, episode : {{obj.number}}</div>
 			</p>		
-			{% endif %}
+			<label for="title">Title</label>
+			<input name="title" id="title" type="text" value="{{obj.title}}"/>
+			
+			
+			{% else %}
 			
 			<label for="title">Title</label>
-			<input name="title" id="title" type="text" value="{{obj.title}}" required />
+			<input name="title" id="title" type="text" value="{{obj.title}}" required/>
 			
+			{% endif %}			
 			<br/>
 			
 			
@@ -98,6 +103,41 @@
 				<input name="imageurl" id="imageurl" type="text" />			
 				{% endif %}
 			{% endif %}			
+			<br/>
+			
+			{% if not obj.show %}
+				<label for="trailerurl">Trailer URL</label>
+				{% if obj.director %}
+				<input name="trailerurl" id="trailerurl" type="text" value="{{obj.trailerurl}}" />
+				{% else %}
+				<input name="trailerurl" id="trailerurl" type="text" />			
+				{% endif %}
+			{% endif %}			
+			<br/>
+			
+				<label for="language">Language</label>
+			{% if obj.show %}
+				{% if obj.show.language %}
+				<input name="language" id="language" type="text" value="{{obj.show.language}}" />
+				{% else %}
+				<input name="language" id="language" type="text" />			
+				{% endif %}
+			{% else %}	
+				{% if obj.language %}
+				<input name="language" id="language" type="text" value="{{obj.language}}" />
+				{% else %}
+				<input name="language" id="language" type="text" />			
+				{% endif %}
+			{% endif %}			
+			<br/>
+			
+			<label for="yearout">Came Out On </label>
+			{% if obj.cameouton %}
+			<input name="yearout" id="yearout" type="text" value="{{obj.cameouton.year}}" />
+			{% else %}
+			<input name="yearout" id="yearout" type="text" />			
+			{% endif %}
+						
 			<br/>
 			
 			

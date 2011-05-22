@@ -84,18 +84,18 @@
 			{% endif %}			
 			<br/>
 			
-				<label for="image">Image URL</label>
+				<label for="imageurl">Image URL</label>
 			{% if obj.show %}
 				{% if obj.show.imageurl %}
-				<input name="image" id="image" type="text" value="{{obj.show.imageurl}}" />
+				<input name="imageurl" id="imageurl" type="text" value="{{obj.show.imageurl}}" />
 				{% else %}
-				<input name="image" id="image" type="text" />			
+				<input name="imageurl" id="imageurl" type="text" />			
 				{% endif %}
 			{% else %}	
 				{% if obj.imageurl %}
-				<input name="image" id="image" type="text" value="{{obj.imageurl}}" />
+				<input name="imageurl" id="imageurl" type="text" value="{{obj.imageurl}}" />
 				{% else %}
-				<input name="image" id="image" type="text" />			
+				<input name="imageurl" id="imageurl" type="text" />			
 				{% endif %}
 			{% endif %}			
 			<br/>

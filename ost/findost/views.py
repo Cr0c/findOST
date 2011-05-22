@@ -230,6 +230,21 @@ def checktrack(request,kind,gid,id):
 	else:
 		raise Http404
 
+def normalize(string):
+	words = []
+	temp = ''
+	for c in (string + ' '):
+		if(c == ' ' and temp != ''):
+			words.append(temp)
+			temp = ''
+		elif (c != ' '):
+			temp = temp + c
+	normstr = ''	
+	for word in words:
+		word = word[0].upper() + word[1:].lower()
+		normstr = normstr +  ' ' + word
+	return normstr[1:]	
+
 def savechanges(request,kind,id):
 	isauth = request.user.is_authenticated()
 	if(isauth):			
@@ -248,6 +263,7 @@ def savechanges(request,kind,id):
 
 		for key in data:
 			value = data[key]
+			value = normalize(value)
 			print('key : ' + key + ' /value : ' + value)
 			for field in obj._meta.fields:
 				if(key == field.name and value):

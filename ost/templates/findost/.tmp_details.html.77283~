@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<script type="text/javascript" src="/static/jquery.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="/static/style.css" />
+		<title>FindOST.com | {{obj.title}}</title>
+	</head>
+	<body>
+		<header>
+			<a href='/home'><div id='header' class='center'></div></a>
+		</header>
+		
+		<nav>
+			<div id='menu'>
+				<ul>
+					<li>{{message}}</li>
+					{% if isauth %}
+					<li><a href="/logout">Log out</a></li>
+					{% else %}
+					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
+					<li><a href="/showsubscribe">New User</a></li>
+					{% endif %}
+					<li id="find2"><a href="/findost/film">Search for a movie</a></li>
+					<li id="find2"><a href="/findost/show">Search for a show</a></li>
+				</ul>
+			</div>
+		</nav>
+		<ul>
+		<br/>
+		{% if isauth %}
+		<a href='{{obj.id}}/edit'>Add more info !</a>
+		<a href='#' onclick='report()'>Report an error !</a>
+		{% endif %}
+		  
+		{% if obj.show.title %}
+			<li>
+				Show : {{obj.show.title}}
+				<div>season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
+				</li>
+		{% endif %}
+		{% if obj.title %}
+			<li>title : {{obj.title}}</li>
+		{% endif %}
+		{% if obj.otitle %}
+			<li>original title : {{obj.otitle}}</li>
+		{% endif %}
+		{% if obj.main_actors.all %}
+			<li>
+				main actors :
+				<ul>
+					<li>b</li>
+					{% for actor in obj.main_actors.all %}
+						<li>{{actor.name}}</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endif %}
+		{% if obj.show.main_actors.all %}
+			<li>
+				main actors :
+				<ul>
+					{% for actor in obj.show.main_actors.all %}
+						<li>{{actor.name}}</li>
+					{% endfor %}
+				</ul>
+			</li>
+		{% endif %}
+		{% if obj.songs.all %}
+			<li>
+				Original Soundtrack :
+				<ul>
+					{% for song in obj.songs.all %}	
+						<li>
+							{{song.title}} by {{song.artist}}
+							{% if song.songid > 0 %}
+							<div style='display:none;' id='player{{song.songid}}'>
+								<object width="492" height="40"> 
+								<param name="movie" value="http://listen.grooveshark.com/songWidget.swf"> 
+								<param name="wmode" value="window"> <param name="allowScriptAccess" value="always"> 
+								<param name="flashvars" value="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0"> 
+								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="492" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
+								</object>
+							</div>						
+							<span>
+								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>listen to this song !</a>	
+							</span>
+							{% else %}
+								{% if song.songid == None %}
+								<span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}})">Check Track Availability</a></span>
+								<!--<span><a href="{{obj.id}}/{{song.id}}/checktrack">Check track availability</a></span>-->
+								<div id="checked{{song.id}}"></div>
+								{% endif %}
+							{% endif %}
+						</li>
+												
+					{%endfor %}
+				</ul>
+			</li>
+		{% endif %}
+		{% if obj.updatedon %}
+			<li>
+				updated on : {{obj.updatedon}}
+			</li>
+		{% endif %}
+		</ul>
+		
+		<script>
+			function showplayer(id){
+				if($('#player'+id).css('display') == 'none'){
+					$('#link'+id).html('hide player');
+				}
+				else{
+					$('#link'+id).html('listen to this song !');
+				}
+				$('#player'+id).toggle('fast');
+			}
+		</script>
+		<script>
+			$(document).ready(function(){
+				$('body').css('width',$(window).width);
+			})
+		</script>
+		<script>
+			function showlogin(){
+				$('#loginform').load('/showlogin?path=' + encodeURIComponent('{{path}}'));
+			}
+			function check(gid,id){
+				$('#checked' + id).load(gid + '/' + id + '/checktrack');
+				$('#span' + id).html('');
+			}
+		</script>
+	</body>
+</html>

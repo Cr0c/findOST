@@ -55,52 +55,6 @@
 			
 			<br/>
 			
-			<label for="director">Director</label>
-			{% if obj.director %}
-			<input name="director" id="director" type="text" value="{{obj.director}}" />
-			{% else %}
-			<input name="director" id="director" type="text" />			
-			{% endif %}
-						
-			<br/>
-			
-			{% if not obj.show %}
-				<label for="producer">Producer</label>
-				{% if obj.director %}
-				<input name="producer" id="producer" type="text" value="{{obj.producer}}" />
-				{% else %}
-				<input name="producer" id="producer" type="text" />			
-				{% endif %}
-			{% endif %}			
-			<br/>
-			
-			{% if not obj.show %}
-				<label for="composer">Original Music Composer</label>
-				{% if obj.director %}
-				<input name="composer" id="composer" type="text" value="{{obj.composer}}" />
-				{% else %}
-				<input name="composer" id="composer" type="text" />			
-				{% endif %}
-			{% endif %}			
-			<br/>
-			
-				<label for="image">Image URL</label>
-			{% if obj.show %}
-				{% if obj.show.imageurl %}
-				<input name="image" id="image" type="text" value="{{obj.show.imageurl}}" />
-				{% else %}
-				<input name="image" id="image" type="text" />			
-				{% endif %}
-			{% else %}	
-				{% if obj.imageurl %}
-				<input name="image" id="image" type="text" value="{{obj.imageurl}}" />
-				{% else %}
-				<input name="image" id="image" type="text" />			
-				{% endif %}
-			{% endif %}			
-			<br/>
-			
-			
 			<div id="actors">
 			<p>Actors</p>
 	

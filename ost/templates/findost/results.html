@@ -1,11 +1,24 @@
 <div>
-	{% if results_set %}
+	{% if results_setMovie %}
+	<h4>Results in Movies</h4>
 	<ul>
-		{% for result in results_set %}
-		<li class='result'><a class='result' href='{{kind}}/details/{{result.id}}'>{{ result.title }}</a></li>
+		{% for result in results_setMovie %}
+		<li class='result'><a class='result' href='findost/film/details/{{result.id}}'>{{ result.title }}</a></li>
 		{% endfor %}
 	</ul>
 	{% else %}
-	<p>No matching {{kind}}s found</p>
+	<p>No matching movie found</p>
 	{% endif %}
 </div>
+<div>
+	{% if results_setShow %}
+	<h4>Results in Shows</h4>
+	<ul>
+		{% for result in results_setShow %}
+		<li class="result"><a class='result' href='findost/show/details/{{result.id}}'>{{result.title}}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	<p>No matching show found</p>
+	{% endif %}
+		

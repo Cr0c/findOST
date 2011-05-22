@@ -31,10 +31,10 @@ def home(request):
 	isauth = request.user.is_authenticated()
 	path = request.path
 	if isauth:
-		message="Bonjour " + request.user.username
+		message="You are logged in as " + request.user.username
 	else:
 		message="You are not logged in"
-	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes, 'message': message, 'isauth': isauth, 'path' : path})
+	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes, 'message': message, 'isauth': isauth, 'path' : path}, context_instance=RequestContext(request))
 
 def showlogin(request):
 	path = request.GET['path']
@@ -108,7 +108,7 @@ def search(request,kind):
 	else:
 		raise Http404
 
-def find_results_set(kind,query):
+def find_results_set(query):
 	querywords = []
 	temp = ''
 	for c in (query + ' '):
@@ -117,20 +117,19 @@ def find_results_set(kind,query):
 			temp = ''
 		else:
 			temp = temp + c
-	if(kind == 'film'):
-		results_set = Film.objects.all()
-	if(kind == 'show'):
-		results_set = Show.objects.all()
+	results_setMovie = Film.objects.all()
+	results_setShow = Show.objects.all()
 	for w in querywords:
-			results_set = results_set.filter(title__contains=w)
-	return results_set.order_by('title')[0:20]	
+			results_setMovie = results_setMovie.filter(title__contains=w)
+			results_setShow = results_setShow.filter(title__contains=w)
+	return results_setMovie.order_by('title')[0:20], results_setShow.order_by('title')[0:20]
 
 
-def results(request,kind):
-	if((kind == 'film' or kind == 'show') and request.is_ajax()):
+def results(request):
+	if request.is_ajax():
 		query = request.GET.get('query')
-		results_set = find_results_set(kind,query)
-		return render_to_response('findost/results.html',{'results_set' : results_set, 'kind' : kind}, context_instance=RequestContext(request))
+		results_setMovie, results_setShow= find_results_set(query)
+		return render_to_response('findost/results.html',{'results_setMovie' : results_setMovie, 'results_setShow' : results_setShow}, context_instance=RequestContext(request))
 	else:
 		raise Http404
 
@@ -140,7 +139,7 @@ def showdetails(request,id):
 	if(isauth):
 		message = "Logged in as " + request.user.username
 	else:
-		message = "You are not logged in"
+		meggae = ''
 	show = get_object_or_404(Show,pk = id)
 	nbseason = range(1, show.nbseason+1)
 	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'path' : path, 'message':message})
@@ -158,7 +157,7 @@ def details(request,kind,id):
 	if(isauth):
 		message = "Logged in as " + request.user.username
 	else:
-		message = "You are not logged in"
+		message =''
 	if(kind == 'film'):
 		obj = get_object_or_404(Film, pk = id)
 	if(kind == 'episode'):

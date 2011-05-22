@@ -201,21 +201,21 @@ def checktrack(request,kind,gid,id):
 		return render_to_response('findost/checktrackok.html',{'songid':song.songid})
 	else:
 		raise Http404
-	#return HttpResponseRedirect('/findost/film/details/'+gid)
-#def savechanges(request,kind,id):
-#	if(kind == 'film'):
-#		obj = get_object_or_404(Film, pk = id)	
-#	if(kind == 'episode'):
-#		obj = get_object_or_404(Episode, pk = id)
-#	data = request.POST
-#	for key,value in data:
-#		if(key='title' and value):
-#			obj.title = value
-#		if(key='otitle' and value):
-#			obj.otitle = value
-#		if(key='director' and value):
-#			obj.director = value
-#	raise Http404		
+
+def savechanges(request,kind,id):
+	if(kind == 'film'):
+		obj = get_object_or_404(Film, pk = id)	
+	if(kind == 'episode'):
+		obj = get_object_or_404(Episode, pk = id)
+	data = request.POST
+	for key,value in data:
+		if(key=='title' and value):
+			obj.title = value
+		if(key=='otitle' and value):
+			obj.otitle = value
+		if(key=='director' and value):
+			obj.director = value
+	raise Http404
 		
 		
 	

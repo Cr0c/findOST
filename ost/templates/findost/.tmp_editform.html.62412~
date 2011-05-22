@@ -38,9 +38,16 @@
 			
 			<div id="actors">
 			<p>Actors</p>
-	
+				{% for actor in obj.main_actors.all %}
+				<input name="actor{{actor.id}}" id="actor{{actor.id}}" type="text" value="{{actor.name}}" /><br/>
+				{% endfor %}
+				
+				{% for actor in obj.show.main_actors.all %}
+				<input name="actor{{actor.id}}" id="actor{{actor.id}}" type="text" value="{{actor.name}}" /><br/>
+				{% endfor %}
+			
 				<div class="actor">
-					<input name="actor1" id="actor1" type="text"/>
+					<input name="newactor1" id="newactor1" type="text"/>
 				</div>
 			</div>
 			
@@ -48,8 +55,10 @@
 			
 			<div id="songs">
 			<p>Songs</p>
+	<!--			<input name="song1" id="song1" type="text" /><span>by</span><input name="artist1" id="artist1" type="text" /><br/>
+		-->	
 				<div class="song">
-					<input name="songtitle1" id="songtitle1" type="text"/><span>by</span><input name="songartist1" id="songartist1" type="text"/>
+					<input name="newsongtitle1" id="newsongtitle1" type="text"/><span>by</span><input name="newsongartist1" id="newsongartist1" type="text"/>
 				</div>
 			</div>
 			
@@ -62,37 +71,20 @@
 		
 		<script>
 			function fillSong(title,artist){
-				$('.song').children().last().val(artist);
-				$('.song').children().last().siblings('input').last().val(title);
-						
+						$('.song').children().last().val(artist);
+						$('.song').children().last().siblings('input').last().val(title);
 					
 				}
-			function fillActor(actor){
-				$('.actor').children().last().val(actor);	
-			}
 				
 			$(document).ready(function() {
 
 				$("#actors").autoAddingTextFields("actor");
 				$("#songs").autoAddingTextFields("song");
 				
-				{% for actor in obj.main_actors.all%}
-					fillActor("{{actor.name}}");
-					$('.actor').children().last().trigger('input');
-				{% endfor %}
-				{% for actor in obj.show.main_actors.all%}
-					fillActor("{{actor.name}}");
-					$('.actor').children().last().trigger('input');
-				{% endfor %}
-				
 				{% for song in obj.songs.all %}
-					var title = "{{song.title}}";
-					var artist = "{{song.artist.name}}";
-					fillSong(title,artist);
-					$('.song').children().last().trigger('input');
+					fillSong('{{song.title}}','{{song.artist.name}}');
 				{% endfor %}
-				
-			}); 
+			});
 		</script>
 	
 	</body>

@@ -28,4 +28,5 @@ urlpatterns = patterns('',
 	(r'^logout$','findost.views.log_out'),
 	(r'^findost/(?P<kind>[a-z]+)/details/(?P<id>\d+)/edit$','findost.views.edit'),
 	(r'^findost/(?P<kind>[a-z]+)/details/(?P<id>\d+)/save$','findost.views.savechanges'),
+	(r'^findost/(?P<kind>[a-z]+)/details/(?P<gid>\d+)/(?P<id>\d+)/checktrack$','findost.views.checktrack'),
 )

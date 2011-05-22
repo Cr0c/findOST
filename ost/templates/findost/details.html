@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -70,6 +70,7 @@
 					{% for song in obj.songs.all %}	
 						<li>
 							{{song.title}} by {{song.artist}}
+							{% if song.songid > 0 %}
 							<div style='display:none;' id='player{{song.songid}}'>
 								<object width="492" height="40"> 
 								<param name="movie" value="http://listen.grooveshark.com/songWidget.swf"> 
@@ -77,12 +78,16 @@
 								<param name="flashvars" value="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0"> 
 								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="492" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
 								</object>
-								
-							{% if song.songid > 0 %}
 							</div>						
 							<span>
 								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>listen to this song !</a>	
 							</span>
+							{% else %}
+								{% if song.songid == None %}
+								<span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}})">Check Track Availability</a></span>
+								<!--<span><a href="{{obj.id}}/{{song.id}}/checktrack">Check track availability</a></span>-->
+								<div id="checked{{song.id}}"></div>
+								{% endif %}
 							{% endif %}
 						</li>
 												
@@ -116,6 +121,10 @@
 		<script>
 			function showlogin(){
 				$('#loginform').load('/showlogin?path=' + encodeURIComponent('{{path}}'));
+			}
+			function check(gid,id){
+				$('#checked' + id).load(gid + '/' + id + '/checktrack');
+				$('#span' + id).html('');
 			}
 		</script>
 	</body>

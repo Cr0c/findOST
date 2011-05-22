@@ -4,8 +4,26 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import Http404,HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+import urllib2,string
 
 
+
+def contains_or_is_contained(str1, str2):
+  return (str1.find(str2) > -1 or str2.find(str1) > -1)
+
+def cleaned(str):
+	notspace = True
+	cstr = ''
+	for c in str:
+		if (c not in string.letters and c not in string.digits):			
+			if(notspace):
+				cstr = cstr + " "
+				notspace = False
+
+		elif(notspace or c != " "):
+			cstr = cstr + c
+			notspace = True
+	return cstr.upper()
 
 def home(request):
 	lastfilms = Film.objects.order_by('-updatedon')[:5]
@@ -139,7 +157,51 @@ def edit(request,kind,id):
 		return render_to_response('findost/editform.html', {'obj' : obj}, context_instance=RequestContext(request))
 	else:
 		raise Http404
-
+		
+def checktrack(request,kind,gid,id):
+	if(request.is_ajax()):
+		file = open('/Users/croc/Sites/ProjetWebTech/DB/ids','a')
+		song = get_object_or_404(Song, pk = id)
+		modtitle = ''
+		modartist = ''	
+		title = song.title.encode('iso-8859-1')
+		for c in title:
+			if(c == " "):modtitle = modtitle + "+"
+			if(c == "%"):modtitle = modtitle + "+percent+"				
+			else: modtitle = modtitle + c	
+		artist = song.artist.name.encode('iso-8859-1')
+		for c in artist:
+			if(c == " "): modartist = modartist + "+"
+			if(c == "%"): modartist = modartist + "+percent+"
+			else: modartist = modartist + c
+		request = "http://tinysong.com/b/"+ modtitle+"+"+modartist+"?format=json&key=b3fa54409e286bd0192b9c2966767482"
+		Json=urllib2.urlopen(request).read()
+		if (Json != '[]' and Json[0] == '{'):
+			ind = Json.index("SongID") + 8
+			songid = ''
+			while (Json[ind] != ","):
+				songid = songid + Json[ind]
+				ind = ind+1
+			ind = Json.index("SongName") + 11
+			songtitle = ''
+			while (Json[ind] != '"'):
+				songtitle = songtitle + Json[ind]
+				ind = ind + 1
+			if (contains_or_is_contained(cleaned(song.title),cleaned(songtitle))):
+				song.songid = int(songid)
+				song.save()
+				file.write(song.title + "_|_" + song.artist.name + "_|_" + songid + "\n")
+			else:
+				song.songid=-1
+				song.save()
+		else:
+			song.songid=-1
+			song.save()
+		file.close()
+		return render_to_response('findost/checktrackok.html',{'songid':song.songid})
+	else:
+		raise Http404
+	#return HttpResponseRedirect('/findost/film/details/'+gid)
 #def savechanges(request,kind,id):
 #	if(kind == 'film'):
 #		obj = get_object_or_404(Film, pk = id)	

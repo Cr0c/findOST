@@ -16,8 +16,12 @@
 			<div id='menu'>
 				<ul>
 					<li>{{message}}</li>
+					{% if isauth %}
+					<li><a href="/logout">Log out</a></li>
+					{% else %}
 					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
 					<li><a href="/showsubscribe">New User</a></li>
+					{% endif %}
 				</ul>
 			</div>
 		</nav>

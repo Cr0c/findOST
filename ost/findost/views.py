@@ -223,6 +223,8 @@ def checktrack(request,kind,gid,id):
 						i=i+1
 					else:
 						i=5
+			else:
+				i=5
 		if(i==5):
 			print("BIATCH3")
 			song.songid=-1

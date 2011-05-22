@@ -9,7 +9,6 @@
 		</ul>
 		{% else %}
 		<h4>No matching movie found</h4>
-		<a href=
 		{% endif %}
 	</div>
 	<div id="showResults">

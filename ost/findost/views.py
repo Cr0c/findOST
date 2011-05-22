@@ -160,7 +160,7 @@ def edit(request,kind,id):
 		
 def checktrack(request,kind,gid,id):
 	if(request.is_ajax()):
-		file = open('/Users/croc/Sites/ProjetWebTech/DB/ids','a')
+		file = open('../DB/ids','a')
 		song = get_object_or_404(Song, pk = id)
 		modtitle = ''
 		modartist = ''	

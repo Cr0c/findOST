@@ -178,6 +178,7 @@ def edit(request,kind,id):
 		
 def checktrack(request,kind,gid,id):
 	if(request.is_ajax()):
+		print("BIATCH")
 		file = open('../DB/ids','a')
 		song = get_object_or_404(Song, pk = id)
 		modtitle = ''
@@ -192,27 +193,38 @@ def checktrack(request,kind,gid,id):
 			if(c == " "): modartist = modartist + "+"
 			if(c == "%"): modartist = modartist + "+percent+"
 			else: modartist = modartist + c
-		request = "http://tinysong.com/b/"+ modtitle+"+"+modartist+"?format=json&key=b3fa54409e286bd0192b9c2966767482"
+		request = "http://tinysong.com/s/"+ modtitle+"+"+modartist+"?format=json&limit=5&key=b3fa54409e286bd0192b9c2966767482"
 		Json=urllib2.urlopen(request).read()
-		if (Json != '[]' and Json[0] == '{'):
-			ind = Json.index("SongID") + 8
-			songid = ''
-			while (Json[ind] != ","):
-				songid = songid + Json[ind]
-				ind = ind+1
-			ind = Json.index("SongName") + 11
-			songtitle = ''
-			while (Json[ind] != '"'):
-				songtitle = songtitle + Json[ind]
-				ind = ind + 1
-			if (contains_or_is_contained(cleaned(song.title),cleaned(songtitle))):
-				song.songid = int(songid)
-				song.save()
-				file.write(song.title + "_|_" + song.artist.name + "_|_" + songid + "\n")
-			else:
-				song.songid=-1
-				song.save()
-		else:
+		i=0
+		while(i<5):
+			if (Json != '[]' and Json[1] == '{'):
+				ind = Json.index("SongID") + 8
+				songid = ''
+				while (Json[ind] != ","):
+					songid = songid + Json[ind]
+					ind = ind+1
+				ind = Json.index("SongName") + 11
+				songtitle = ''
+				while (Json[ind] != '"'):
+					songtitle = songtitle + Json[ind]
+					ind = ind + 1
+				if (contains_or_is_contained(cleaned(song.title),cleaned(songtitle))):
+					song.songid = int(songid)
+					song.save()
+					file.write(song.title + "_|_" + song.artist.name + "_|_" + songid + "\n")
+					i=6
+				else:
+					print("BIATCH 2")
+					while(Json[ind] != '}'):
+						ind =ind+1
+					ind=ind+1
+					Json=Json[ind:]
+					if(Json[0] == ','):
+						i=i+1
+					else:
+						i=5
+		if(i==5):
+			print("BIATCH3")
 			song.songid=-1
 			song.save()
 		file.close()
@@ -273,23 +285,6 @@ def savechanges(request,kind,id):
 		obj.songs.add(song)
 
 	obj.save()
- 
-#			if(key.startswith('songtitle') and value):
-#				title = value
-#				song = Song(title=value)
-#			if(key.startswith('songartist') and value):
-#				if(Artist.objects.filter(name=value)):
-#					artist = Artist.objects.filter(name=value)
-#				else:
-#					artist = Artist(name = value)
-#					artist.save()
-#				song.artist=artist
-#				if( not Song.objects.filter(title=title).filter(artist=artist)):
-#					song.save()
-#				else:
-#					song= Song.objects.filter(title=title).filter(artist=artist)
-#				obj.songs.add(song)
-#			obj.save()
 	return HttpResponseRedirect('/findost/' + kind + '/details/' + id) 
 		
 		

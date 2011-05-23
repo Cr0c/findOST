@@ -91,7 +91,7 @@
 				<ul>
 					{% for song in obj.songs.all %}	
 						<li>
-							{{song.title}} by {{song.artist}}
+							<b>{{song.title}} by {{song.artist}}</b>
 							<span id="postedBy"><i>Song posted by {{song.postedby}}</i></span><br>						
 							{% if song.songid > 0 %}
 							<div style='display:none;' id='player{{song.songid}}'>
@@ -120,11 +120,11 @@
 							{% endif %}	
 							{% else %}
 								{% if song.songid == None %}
-								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}}); return false;">Check Track Availability</a></span></span>
+
+								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}});return false;">Check Track Availability</a></span></span>
 								<div id="checked{{song.id}}"></div>
 								{% endif %}
 							{% endif %}
-							<br>
 						</li>
 						<br>						
 					{%endfor %}

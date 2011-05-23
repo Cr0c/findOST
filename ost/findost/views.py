@@ -31,7 +31,7 @@ def home(request):
 	isauth = request.user.is_authenticated()
 	path = request.path
 	if isauth:
-		message="You are logged in as " + request.user.username
+		message="Logged in as " + request.user.username
 	else:
 		message="You are not logged in"
 	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes, 'message': message, 'isauth': isauth, 'path' : path}, context_instance=RequestContext(request))
@@ -146,12 +146,14 @@ def showdetails(request,id):
 	path = request.path
 	isauth = request.user.is_authenticated()
 	if(isauth):
-		message = "Logged in as " + request.user.username
+		user = request.user.username
+		message = "Logged in as " + user
 	else:
-		message = ''
+		message = 'You are not logged in'
+		user = None
 	show = get_object_or_404(Show,pk = id)
 	nbseason = range(1, show.nbseason+1)
-	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'path' : path, 'message':message})
+	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'user':user, 'path' : path, 'message':message},context_instance=RequestContext(request))
 
 def loadepisodes(request,id):
 	if(request.is_ajax()):

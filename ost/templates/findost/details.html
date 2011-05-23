@@ -49,7 +49,13 @@
 		<a href='{{obj.id}}/edit'>Add more info !</a>
 		{% endif %}
 	
-	
+		{% if obj.show.imageurl %}
+			<img alt='image' src='{{obj.show.imageurl}}' />
+		{% endif %}
+		{% if obj.imageurl %}
+			<img alt='image' src='{{obj.imageurl}}' />
+		{% endif %}
+					
 		{% if obj.show.title %}
 			<li>
 				<h3>Show : {{obj.show.title}}</h3>
@@ -66,6 +72,48 @@
 		{% if obj.otitle %}
 			<li>Original title : {{obj.otitle}}</li>
 		{% endif %}
+		
+		{% if obj.director %}
+			<li>Director : {{obj.director}}</li>
+		{% endif %}
+		
+		{% if obj.show.director %}
+			<li>Director : {{obj.director}}</li>
+		{% endif %}
+		
+		{% if obj.producer %}
+			<li>Producer : {{obj.producer}}</li>
+		{% endif %}
+		
+		{% if obj.composer %}
+			<li>Original Music Composer : {{obj.composer}}</li>
+		{% endif %}
+
+		{% if obj.show.startingyear %}
+			<li>Starting year of the show : {{obj.show.startingyear}}</li>
+		{% endif %}
+
+		{% if obj.show.status != None %}
+			<li>Show still running : {{obj.show.status}}</li>
+		{% endif %}
+
+
+		{% if obj.trailerurl %}
+			<li><a href='{{obj.trailerurl}}'>Trailer URL</a></li>
+		{% endif %}
+
+		{% if obj.language %}
+			<li>Language : {{obj.language}}</li>
+		{% endif %}
+		
+		{% if obj.cameouton %}
+			<li>Came out on : {{obj.cameouton}}</li>
+		{% endif %}
+		
+		{% if obj.genre %}
+			<li>Genre : {{obj.genre}}</li>
+		{% endif %}
+		
 		{% if obj.main_actors.all %}
 			<li>
 				main actors :

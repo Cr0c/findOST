@@ -338,8 +338,6 @@ def savechangesepisode(request,kind,id):
 
 
 
-			if(key=='yearout' and value):
-				obj.cameouton=datetime.datetime(int(value),1,1)
 			if(key=='number'):
 				number=value
 			if(key=='seasonnb'):

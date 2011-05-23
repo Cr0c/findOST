@@ -33,6 +33,8 @@
 		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}
 			
+			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />
+			
 			<label for="title">Title</label>
 			{% if obj.title %}
 			<input name="title" id="title" type="text" value="{{obj.title}}" required/>

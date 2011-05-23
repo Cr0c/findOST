@@ -32,6 +32,8 @@
 		<br/>
 		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}
+
+			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />
 			
 			<label for="showtitle">Show Title</label>
 			{% if obj.show.title %}

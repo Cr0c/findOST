@@ -176,11 +176,23 @@ def edit(request,kind,id):
 	isauth = request.user.is_authenticated()
 	if(isauth):
 		if(kind == 'film'):
-			obj = get_object_or_404(Film, pk = id)
-			return render_to_response('findost/editfilmform.html', {'obj' : obj}, context_instance=RequestContext(request))	
+			if(id != '0'):
+				obj = get_object_or_404(Film, pk = id)
+			else:
+				obj=Film(updatedon=datetime.datetime.now())
+				obj.save()
+			return render_to_response('findost/editfilmform.html', {'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
 		if(kind == 'episode'):
-			obj = get_object_or_404(Episode, pk = id)
-			return render_to_response('findost/editepisodeform.html', {'obj' : obj}, context_instance=RequestContext(request))
+			if(id != '0'):
+				obj = get_object_or_404(Episode, pk = id)
+			else:
+				obj=Episode(number=1,seasonnb=1)
+				s = Show()
+				s.save()
+				obj.show = s
+				obj.updatedon=datetime.datetime.now()
+				obj.save()
+			return render_to_response('findost/editepisodeform.html', {'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
 	else:
 		raise Http404
 		
@@ -265,14 +277,11 @@ def savechanges(request,kind,id):
 		raise Http404
 
 def savechangesepisode(request,kind,id):
-	if(id!=0):
-		obj = get_object_or_404(Episode, pk = id)
-		obj.show.mainactors.clear()
-		obj.songs.clear()	
-	else:
-		obj=Episode()
+	objid=request.POST['objid']
+	obj = get_object_or_404(Episode, pk = int(objid))
+	obj.show.mainactors.clear()
+	obj.songs.clear()	
 	
-
 	data = request.POST
 	songartists = {}
 	songtitles = {}
@@ -328,18 +337,17 @@ def savechangesepisode(request,kind,id):
 		obj.songs.add(song)
 	obj.updatedon=datetime.datetime.now()	
 	obj.save()
-	return HttpResponseRedirect('/findost/' + kind + '/details/' + id) 
+	return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
 	
 
 def savechangesfilm(request,kind,id):
-	if(id!=0):
-		obj = get_object_or_404(Film, pk = id)
-		obj.mainactors.clear()
-		obj.songs.clear()	
-	else:
-		obj=Film()
-
-
+	print 'in savechangesfilm'
+	objid=request.POST['objid']
+	print objid	
+	obj = get_object_or_404(Film, pk = int(objid))
+	obj.mainactors.clear()
+	obj.songs.clear()	
+	
 	data = request.POST
 	songartists = {}
 	songtitles = {}
@@ -358,7 +366,7 @@ def savechangesfilm(request,kind,id):
 				actor.save()
 				obj.mainactors.add(actor)
 		if(key=='yearout' and value):
-			obj.cameouton=datetime.datetime(int(value),1,1)
+			obj.cameouton=int(value)
 
 		if(key.startswith('songtitle') and value):
 			songtitles[key[9:]] = value
@@ -380,9 +388,12 @@ def savechangesfilm(request,kind,id):
 			song.save()
 		
 		obj.songs.add(song)
+	print 'before updatedon'
 	obj.updatedon=datetime.datetime.now()	
+	print 'before save()'
 	obj.save()
-	return HttpResponseRedirect('/findost/' + kind + '/details/' + id) 
+	print 'after save()'
+	return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
 		
 	
 

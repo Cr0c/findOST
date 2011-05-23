@@ -317,12 +317,16 @@ aside {
 }
 
 #thumbsLatest{
-	height: 60px;
+	height: 50px;
 	width: 50px;
+	margin-bottom: 10px;
 	background-size: 100%;
+	background-repeat: no-repeat;
+	border : solid 1px;
 }
 
 #thumbsLatest img{
+	
 	size: 100%;
 }
 

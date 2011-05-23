@@ -9,7 +9,6 @@
 		</ul>
 		{% else %}
 		<h4>No matching movie found</h4>
-		<a href='/findost/film/details/0/edit'>Add a New Film</a>
 		{% endif %}
 	</div>
 	<div id="showResults">
@@ -22,7 +21,6 @@
 		</ul>
 		{% else %}
 		<h4>No matching show found</h4>
-		<a href='/findost/episode/details/0/edit'>Add a New Show</a>
 		{% endif %}
 	</div>
 </div>

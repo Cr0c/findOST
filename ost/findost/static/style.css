@@ -316,3 +316,18 @@ aside {
 	float:right;
 }
 
+#thumbsLatest{
+	height: 60px;
+	width: 50px;
+	background-size: 100%;
+}
+
+#thumbsLatest img{
+	size: 100%;
+}
+
+#player {
+	margin-right: 50px;
+	background-color: rgba(0, 0, 0, 0.0);
+}
+

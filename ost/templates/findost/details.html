@@ -54,10 +54,14 @@
 			<li>
 				<h3>Show : {{obj.show.title}}</h3>
 				<div id="detailsFields">season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
-				</li>
-		{% endif %}
-		{% if obj.title %}
-			<li><h3>Title : {{obj.title}}</h3></li>
+			</li>
+			{% if obj.title %}
+				<div id="detailsFields"><li><h4>Title : {{obj.title}}</h4></li></div>
+			{% endif %}
+		{% else %}
+			{% if obj.title %}
+				<li><h3>Title : {{obj.title}}</h3></li>
+			{% endif %}
 		{% endif %}
 		{% if obj.otitle %}
 			<li>Original title : {{obj.otitle}}</li>
@@ -94,12 +98,12 @@
 							<b>{{song.title}} by {{song.artist}}</b>
 							<span id="postedBy"><i>Song posted by {{song.postedby}}</i></span><br>						
 							{% if song.songid > 0 %}
-							<div style='display:none;' id='player{{song.songid}}'>
+							<div id="player"><div style='display:none;' id='player{{song.songid}}'>
 								<object width="492" height="40"> 
 								<param name="movie" value="http://listen.grooveshark.com/songWidget.swf"> 
 								<param name="wmode" value="window"> <param name="allowScriptAccess" value="always"> 
 								<param name="flashvars" value="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0"> 
-								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="492" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
+								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="450" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
 								</object>
 								
 								{% if isauth %}	
@@ -110,7 +114,7 @@
 									<a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a>
 									{% endif %}
 								{% endif %}	
-							</div>	
+							</div></div>	
 												
 							<span id="playerLinks">
 								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Listen to this song !</a>	

@@ -70,7 +70,7 @@
 					<li>
 						<section>
 							{% if film.imageurl %}
-							<img id='{{film.id}}' src='{{film.imageurl}}' width="50px" height="50px"/>
+							<div id="thumbsLatest" style="background-image: url('{{film.imageurl}}');"></div>
 							{% else %}
 							<img id='{{film.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}
@@ -93,7 +93,7 @@
 					<li>
 						<section>
 							{% if episode.imageurl %}
-							<img id='{{episode.show.id}}' src='{{episode.imageurl}}' width="50px" height="50px"/>
+							<div id="thumbsLatest"><img id='{{episode.show.id}}' src='{{episode.imageurl}}' size="100%"/></div>
 							{% else %}
 							<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}

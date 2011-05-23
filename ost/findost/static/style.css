@@ -338,6 +338,7 @@ aside {
 	margin-bottom: 10px;
 	background-size: 100%;
 	background-repeat: no-repeat;
+	background-color: rgba(0, 0, 0, 0.0);
 }
 
 #elemInLatest {
@@ -346,12 +347,18 @@ aside {
 }
 
 #thumbsLatest img{
-	
 	size: 100%;
+	-moz-border-radius: 3px;  
+    -webkit-border-radius: 3px;
 }
 
 #player {
 	margin-right: 50px;
 	background-color: rgba(0, 0, 0, 0.0);
+}
+
+#reported {
+	color: #993344;
+	font-style:italic;
 }
 

@@ -42,7 +42,7 @@
 		</div>
 	</nav>
 		
-		<div id="playerLinks">
+	<div>
 		<ul>
 		<br/>
 		{% if isauth %}
@@ -120,7 +120,7 @@
 								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Listen to this song !</a>	
 							</span>
 							{% if song.reported %}
-								<span>Reported by {{song.reportedby}}</span>
+								<span id="reported">Reported by {{song.reportedby}}</span>
 							{% endif %}	
 							{% else %}
 								{% if song.songid == None %}

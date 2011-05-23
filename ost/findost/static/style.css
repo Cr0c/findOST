@@ -71,6 +71,8 @@ nav {
 	width: 940px;  
 	height: 25px;
 	background-color: rgba(10, 10, 10, 0.40);
+	-moz-border-radius: 3px;  
+    -webkit-border-radius: 3px;
 }
 
 nav ul {  
@@ -127,7 +129,7 @@ span {
 }
 
 .description{
-	margin-top:-50px;
+	margin-top:-57px;
 	margin-left:60px;
 }
 
@@ -166,12 +168,26 @@ li.result:nth-child(2n+1) > a{
 	color: white;
 }
 
-a{
+a {
+	color: #2554C7;
 	text-decoration:none;
 }
 
+#playerLinks a {
+	color: #AAAAAA;
+	padding: 3px;
+	background-color: rgba(10, 10, 10, 0.30);
+	-moz-border-radius: 5px;  
+    -webkit-border-radius: 5px;
+}
+
 a:hover{
-	text-decoration:underline;
+	color: #DDDDDD;
+	text-decoration:none;
+}
+
+#playerLinks a:hover {
+	border: solid 1px;
 }
 
 .eplist{
@@ -322,7 +338,11 @@ aside {
 	margin-bottom: 10px;
 	background-size: 100%;
 	background-repeat: no-repeat;
-	border : solid 1px;
+}
+
+#elemInLatest {
+	background-color: rgba(0, 0, 0, 0.0);
+	margin-bottom: 8px;
 }
 
 #thumbsLatest img{

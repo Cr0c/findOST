@@ -4,7 +4,7 @@
 		<h4>Results in Movies</h4>
 		<ul>
 			{% for result in results_setMovie %}
-			<li class='result'><a class='result' href='findost/film/details/{{result.id}}'>{{ result.title }},{{ result.cameouton }}</a></li>
+			<li class='result'><a class='result' href='findost/film/details/{{result.id}}'>{{ result.title }}, {{ result.cameouton }}</a></li>
 			{% endfor %}
 		</ul>
 		{% else %}

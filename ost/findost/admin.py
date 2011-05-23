@@ -20,6 +20,7 @@ admin.site.register(Actor, ActorAdmin)
 
 class SongAdmin(admin.ModelAdmin):
      search_fields = ['title']
+     list_filter = ['reported']
 
 admin.site.register(Song, SongAdmin)
 
@@ -31,6 +32,5 @@ admin.site.register(Artist, ArtistAdmin)
 class EpisodeAdmin(admin.ModelAdmin):
      search_fields = ['title']
      search_fields = ['number']
-     list_filter = ['reportedby']
 
 admin.site.register(Episode, EpisodeAdmin)

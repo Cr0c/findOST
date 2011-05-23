@@ -376,7 +376,10 @@ def savechangesepisode(request,kind,id):
 				show = Show.objects.filter(title=showtitle)[0]
 			else:
 				show = obj.show	
-			if(int(show.nbseason) < int(obj.seasonnb)):
+			if(show.nbseason):
+				if(int(show.nbseason) < int(obj.seasonnb)):
+					show.nbseason = obj.seasonnb
+			else:
 				show.nbseason = obj.seasonnb
 			if(show.episode_set.filter(number=number).filter(seasonnb=seasonnb)):
 				obj2 = show.episode_set.filter(number=number).filter(seasonnb=seasonnb)[0]
@@ -397,7 +400,9 @@ def savechangesepisode(request,kind,id):
 						message2 = "the episode you want to update is already in database : add your changes here"
 						return render_to_response('findost/editepisodeform.html', {'message' : message , 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))								
 			else:
+				print "1 + " + obj.show.title
 				obj.show.delete()
+				print "2 + " + obj.show.title
 				obj.show = show
 				obj.show.save()
 				obj.updatedon=datetime.datetime.now()		

@@ -283,6 +283,7 @@ aside {
 	width: 200px;
 	margin-bottom: 20px;
 	position: absolute;
+	z-index:100;
 }
 
 #latest img {
@@ -295,6 +296,10 @@ aside {
 	margin-left: 40px;
 	padding-left: 20px;
 	margin-right: 380px;
+}
+
+#detailsFields li {
+	margin-bottom: 5px;
 }
 
 #playerLinks {

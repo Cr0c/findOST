@@ -71,13 +71,13 @@
 					<li>
 						<section>
 							{% if film.imageurl %}
-							<img id='{{film.id}}' src='{{film.imageurl}}'/>
+							<img id='{{film.id}}' src='{{film.imageurl}}' width="50px" height="50px"/>
 							{% else %}
 							<img id='{{film.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}
 							<div class="description">
 							<a href="/findost/film/details/{{film.id}}" >{{ film.title }}</a><br/>
-							came out on : {{film.cameouton}}
+							came out in : {{film.cameouton}}
 							</div>
 						</section>
 					</li>
@@ -94,7 +94,7 @@
 					<li>
 						<section>
 							{% if episode.imageurl %}
-							<img id='{{episode.show.id}}' src='{{episode.imageurl}}'/>
+							<img id='{{episode.show.id}}' src='{{episode.imageurl}}' width="50px" height="50px"/>
 							{% else %}
 							<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}

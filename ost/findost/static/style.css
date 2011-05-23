@@ -285,6 +285,21 @@ aside {
 	position: absolute;
 }
 
+#latest img {
+	width: 50px;
+	height: 50px;
+}
 
+#detailsFields {
+	background-color: rgba(0, 0, 0, 0.15);
+	margin-left: 40px;
+	padding-left: 20px;
+	margin-right: 380px;
+}
+
+#playerLinks {
+	float: right;
+	margin-right: 20px;
+}
 
 

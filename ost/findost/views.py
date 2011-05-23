@@ -167,7 +167,7 @@ def details(request,kind,id):
 		user = request.user.username
 		message = "Logged in as " + user
 	else:
-		message =''
+		message ='You are not logged in'
 		user = None
 	if(kind == 'film'):
 		obj = get_object_or_404(Film, pk = id)

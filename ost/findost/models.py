@@ -28,6 +28,10 @@ class Song(models.Model):
 	length.null = True
 	postedby = models.CharField(max_length = 30)
 	postedby.null = True
+	reported = models.NullBooleanField()
+	reported.null = True
+	reportedby = models.CharField(max_length = 15)
+	reportedby.null = True
 
 	def __unicode__(self):
 		return self.title
@@ -59,6 +63,10 @@ class Film(models.Model):
 	genre.null = True
 	songs = models.ManyToManyField(Song)
 	updatedon= models.DateTimeField()
+	reported = models.CharField(max_length = 15)
+	reported.null = True
+	reportedby = models.CharField(max_length = 15)
+	reportedby.null = True	
 
 	def __unicode__(self):
 		return self.title
@@ -102,6 +110,11 @@ class Episode(models.Model):
 	cameouton.null = True
 	songs = models.ManyToManyField(Song)
 	updatedon= models.DateTimeField()
+	reported = models.CharField(max_length = 15)
+	reported.null = True
+	reportedby = models.CharField(max_length = 15)
+	reportedby.null = True
+	
 
 	def __unicode__(self):
 		return ('season ' + str(self.seasonnb) + ' episode ' + str(self.number) + ' : ' + self.title)

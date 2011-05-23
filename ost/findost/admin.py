@@ -4,6 +4,7 @@ from django.contrib import admin
 
 class FilmAdmin(admin.ModelAdmin):
     search_fields = ['title']
+    list_filter = ['reportedby']
 
 admin.site.register(Film, FilmAdmin)
 
@@ -30,5 +31,6 @@ admin.site.register(Artist, ArtistAdmin)
 class EpisodeAdmin(admin.ModelAdmin):
      search_fields = ['title']
      search_fields = ['number']
+     list_filter = ['reportedby']
 
 admin.site.register(Episode, EpisodeAdmin)

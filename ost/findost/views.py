@@ -135,9 +135,10 @@ def find_results_set(query):
 
 def results(request):
 	if request.is_ajax():
+		isauth = request.user.is_authenticated()
 		query = request.GET.get('query')
 		results_setMovie, results_setShow= find_results_set(query)
-		return render_to_response('findost/results.html',{'results_setMovie' : results_setMovie, 'results_setShow' : results_setShow}, context_instance=RequestContext(request))
+		return render_to_response('findost/results.html',{'results_setMovie' : results_setMovie, 'results_setShow' : results_setShow, 'isauth' : isauth, 'newtitle' : query}, context_instance=RequestContext(request))
 	else:
 		raise Http404
 
@@ -147,7 +148,7 @@ def showdetails(request,id):
 	if(isauth):
 		message = "Logged in as " + request.user.username
 	else:
-		meggae = ''
+		message = ''
 	show = get_object_or_404(Show,pk = id)
 	nbseason = range(1, show.nbseason+1)
 	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'path' : path, 'message':message})
@@ -163,23 +164,26 @@ def details(request,kind,id):
 	path = request.path
 	isauth = request.user.is_authenticated()
 	if(isauth):
-		message = "Logged in as " + request.user.username
+		user = request.user.username
+		message = "Logged in as " + user
 	else:
 		message =''
+		user = None
 	if(kind == 'film'):
 		obj = get_object_or_404(Film, pk = id)
 	if(kind == 'episode'):
 		obj = get_object_or_404(Episode, pk = id)
-	return render_to_response('findost/details.html', {'obj' : obj, 'isauth':isauth, 'path' : path, 'message':message})
+	return render_to_response('findost/details.html', {'obj' : obj, 'isauth':isauth, 'user':user, 'path' : path, 'message':message},context_instance=RequestContext(request))
 
 def edit(request,kind,id):
+	newtitle = request.GET.get('title')
 	isauth = request.user.is_authenticated()
 	if(isauth):
 		if(kind == 'film'):
 			if(id != '0'):
 				obj = get_object_or_404(Film, pk = id)
 			else:
-				obj=Film(updatedon=datetime.datetime.now())
+				obj=Film(title=newtitle, updatedon=datetime.datetime.now())
 				obj.save()
 			return render_to_response('findost/editfilmform.html', {'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
 		if(kind == 'episode'):
@@ -187,7 +191,7 @@ def edit(request,kind,id):
 				obj = get_object_or_404(Episode, pk = id)
 			else:
 				obj=Episode(number=1,seasonnb=1)
-				s = Show()
+				s = Show(title=newtitle)
 				s.save()
 				obj.show = s
 				obj.updatedon=datetime.datetime.now()
@@ -341,9 +345,7 @@ def savechangesepisode(request,kind,id):
 	
 
 def savechangesfilm(request,kind,id):
-	print 'in savechangesfilm'
 	objid=request.POST['objid']
-	print objid	
 	obj = get_object_or_404(Film, pk = int(objid))
 	obj.mainactors.clear()
 	obj.songs.clear()	
@@ -394,9 +396,26 @@ def savechangesfilm(request,kind,id):
 	obj.save()
 	print 'after save()'
 	return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
-		
-	
 
+def report(request,kind,id,sid):
+	if(request.user.is_authenticated()):
+		reportedby = request.user.username
+		song = get_object_or_404(Song, pk = sid)
+		song.reported=True
+		song.reportedby = reportedby
+		song.save()
+		return HttpResponseRedirect('/findost/' + kind + '/details/' + id)
+	else: 
+		raise Http404
 
+def unreport(request,kind,id,sid):
+	if(request.user.is_authenticated()):
+		song = get_object_or_404(Song, pk = sid)
+		song.reported=False
+		song.reportedby = None
+		song.save()
+		return HttpResponseRedirect('/findost/' + kind + '/details/' + id)
+	else: 
+		raise Http404
 	
 

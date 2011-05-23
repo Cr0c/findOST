@@ -179,16 +179,20 @@ def edit(request,kind,id):
 	newtitle = request.GET.get('title')
 	isauth = request.user.is_authenticated()
 	if(isauth):
+		message = "Logged in as " + request.user.username
 		if(kind == 'film'):
 			if(id != '0'):
 				obj = get_object_or_404(Film, pk = id)
+				message2 ="Edit movie"
 			else:
 				obj=Film(title=newtitle, updatedon=datetime.datetime.now())
 				obj.save()
-			return render_to_response('findost/editfilmform.html', {'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
+				message2 = "Fill in the information of the movie you want to add"
+			return render_to_response('findost/editfilmform.html', {'message2' : message2, 'message' : message, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
 		if(kind == 'episode'):
 			if(id != '0'):
 				obj = get_object_or_404(Episode, pk = id)
+				message2="Edit episode"
 			else:
 				obj=Episode(number=1,seasonnb=1)
 				s = Show(title=newtitle)
@@ -196,7 +200,8 @@ def edit(request,kind,id):
 				obj.show = s
 				obj.updatedon=datetime.datetime.now()
 				obj.save()
-			return render_to_response('findost/editepisodeform.html', {'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
+				message2 = "Fill in the information of the show you want to add"
+			return render_to_response('findost/editepisodeform.html', {'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
 	else:
 		raise Http404
 		
@@ -287,121 +292,166 @@ def savechanges(request,kind,id):
 		raise Http404
 
 def savechangesepisode(request,kind,id):
-	objid=request.POST['objid']
-	obj = get_object_or_404(Episode, pk = int(objid))
-	obj.show.mainactors.clear()
-	obj.songs.clear()	
+	isauth = request.user.is_authenticated()
+	if(isauth):
+		message="You are logged in as " + request.user.username
+		objid=request.POST['objid']
+		obj = get_object_or_404(Episode, pk = int(objid))
+		obj.show.mainactors.clear()	
+		obj.songs.clear()	
 	
-	data = request.POST
-	songartists = {}
-	songtitles = {}
-		
-	for key in data:
-		value = data[key]
-		value = normalize(value)
-		print ('key : ' + key + ' / value : ' + value)
-		for field in obj._meta.fields:
-			if(key == field.name and value):
-				obj.__setattr__(field.name , value)
-		if(key.startswith('actor') and value):
-			if(Actor.objects.filter(name=value)):
-				actor = Actor.objects.filter(name=value)[0]
-			else:
-				actor = Actor(name = value)
-			actor.save()
-			obj.show.mainactors.add(actor)
-		if(key=='yearout' and value):
-			obj.cameouton=datetime.datetime(int(value),1,1)
-		if(key=='showtitle' and value):
-			obj.show.title=value
-		if(key=='showstatus' and value):
-			if(value == 'True'):
-				obj.show.status=True
-			else:
-				obj.show.status=False
-
-		for field in obj.show._meta.fields:
-			if(key == field.name and value):
-				obj.show.__setattr__(field.name , value)
-		obj.show.save()	
-
-		if(key.startswith('songtitle') and value):
-			songtitles[key[9:]] = value
-		if(key.startswith('songartist') and value):
-			songartists[key[10:]] = value
-
-	for key in songtitles:
-		title = songtitles[key]
-		artistname = songartists[key]
-		if(Artist.objects.filter(name=artistname)):
-			artist = Artist.objects.get(name=artistname)
-		else:
-			artist = Artist(name=artistname)
-			artist.save()
-		if(Song.objects.filter(title=title).filter(artist = artist)):
-			song=Song.objects.filter(title=title).filter(artist = artist)[0]
-		else:
-			song = Song(title=title,artist=artist,postedby=request.user.username)
-			song.save()
-		
-		obj.songs.add(song)
-	obj.updatedon=datetime.datetime.now()	
-	obj.save()
-	return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
-	
-
-def savechangesfilm(request,kind,id):
-	objid=request.POST['objid']
-	obj = get_object_or_404(Film, pk = int(objid))
-	obj.mainactors.clear()
-	obj.songs.clear()	
-	
-	data = request.POST
-	songartists = {}
-	songtitles = {}
-		
-	for key in data:
-		value = data[key]
-		value = normalize(value)
-		for field in obj._meta.fields:
-			if(key == field.name and value):
-				obj.__setattr__(field.name , value)
+		data = request.POST	
+		songartists = {}
+		songtitles = {}
+			
+		for key in data:
+			value = data[key]
+			value = normalize(value)
+			showtitle = ''
+			for field in obj._meta.fields:
+				if(key == field.name and value):
+					obj.__setattr__(field.name , value)
 			if(key.startswith('actor') and value):
 				if(Actor.objects.filter(name=value)):
 					actor = Actor.objects.filter(name=value)[0]
 				else:
 					actor = Actor(name = value)
 				actor.save()
-				obj.mainactors.add(actor)
-		if(key=='yearout' and value):
-			obj.cameouton=int(value)
+				obj.show.mainactors.add(actor)
+			if(key=='yearout' and value):
+				obj.cameouton=datetime.datetime(int(value),1,1)
+			if(key=='showtitle' and value):
+				obj.show.title=value
+				showtitle = value
+			if(key=='showstatus' and value):
+				if(value == 'True'):
+					obj.show.status=True
+				else:
+					obj.show.status=False		
 
-		if(key.startswith('songtitle') and value):
-			songtitles[key[9:]] = value
-		if(key.startswith('songartist') and value):
-			songartists[key[10:]] = value
+			for field in obj.show._meta.fields:	
+				if(key == field.name and value):
+					obj.show.__setattr__(field.name , value)	
 
-	for key in songtitles:
-		title = songtitles[key]
-		artistname = songartists[key]
-		if(Artist.objects.filter(name=artistname)):
-			artist = Artist.objects.get(name=artistname)
-		else:
-			artist = Artist(name=artistname)
-			artist.save()
-		if(Song.objects.filter(title=title).filter(artist = artist)):
-			song=Song.objects.filter(title=title).filter(artist = artist)[0]
-		else:
-			song = Song(title=title,artist=artist,postedby=request.user.username)
-			song.save()
+			if(key.startswith('songtitle') and value):
+				songtitles[key[9:]] = value
+			if(key.startswith('songartist') and value):
+				songartists[key[10:]] = value	
+
+		for key in songtitles:
+			title = songtitles[key]
+			artistname = songartists[key]
+			if(Artist.objects.filter(name=artistname)):
+				artist = Artist.objects.get(name=artistname)
+			else:
+				artist = Artist(name=artistname)
+				artist.save()
+			if(Song.objects.filter(title=title).filter(artist = artist)):
+				song=Song.objects.filter(title=title).filter(artist = artist)[0]
+			else:
+				song = Song(title=title,artist=artist,postedby=request.user.username)
+				song.save()
+			
+			obj.songs.add(song)
+		if(showtitle and number and seasonnb):
+			if(Show.objects.filter(title=showtitle)):
+				show = Show.objects.filter(title=showtitle)
+				if(show.episode_set.filter(number=int(number)).filter(seasonnb=seasonnb)):
+					obj = show.episode_set.filter(number=int(number)).filter(seasonnb=int(seasonnb))[0]
+					message2 = 'The Episode you want to add' 
+					return render_to_response('findost/editepisodeform.html', {'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
+			obj.show.save()	
+		obj.updatedon=datetime.datetime.now()	
+		obj.save()
+		return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
+	else:
+		raise Http404	
+
+def savechangesfilm(request,kind,id):
+	isauth = request.user.is_authenticated()
+	if(isauth):
+		message="You are logged in as " + request.user.username
+		objid=request.POST['objid']
+		obj = get_object_or_404(Film, pk = int(objid))
+		obj.mainactors.clear()
+		obj.songs.clear()	
 		
-		obj.songs.add(song)
-	print 'before updatedon'
-	obj.updatedon=datetime.datetime.now()	
-	print 'before save()'
-	obj.save()
-	print 'after save()'
-	return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
+		data = request.POST
+		songartists = {}
+		songtitles = {}
+		title=''
+		yearout=''	
+		for key in data:
+			value = data[key]
+			value = normalize(value)
+			for field in obj._meta.fields:
+				if(key == field.name and value):					
+					obj.__setattr__(field.name , value)
+				if(key.startswith('actor') and value):
+					if(Actor.objects.filter(name=value)):
+						actor = Actor.objects.filter(name=value)[0]
+					else:
+						actor = Actor(name = value)
+					actor.save()	
+					obj.mainactors.add(actor)
+			if(key=='title'):
+				title=value
+			if(key=='yearout'):
+				yearout=value	
+			
+
+			if(key.startswith('songtitle') and value):
+				songtitles[key[9:]] = value
+			if(key.startswith('songartist') and value):
+				songartists[key[10:]] = value		
+
+		for key in songtitles:
+			title = songtitles[key]
+			artistname = songartists[key]
+			if(Artist.objects.filter(name=artistname)):
+				artist = Artist.objects.get(name=artistname)
+			else:
+				artist = Artist(name=artistname)
+				artist.save()
+			if(Song.objects.filter(title=title).filter(artist = artist)):
+				song=Song.objects.filter(title=title).filter(artist = artist)[0]
+			else:
+				song = Song(title=title,artist=artist,postedby=request.user.username)
+				song.save()
+			
+			obj.songs.add(song)
+
+		if(title and yearout):
+			if(Film.objects.filter(title=title).filter(cameouton=yearout)):
+				obj2 = Film.objects.filter(title=title).filter(cameouton=yearout)[0]
+				if(obj.id == obj2.id):
+					obj.updatedon=datetime.datetime.now()	
+					obj.cameouton=int(yearout)
+					obj.save()
+					return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 	
+				else:
+					if(id == '0'):					
+						obj.delete()
+						obj = obj2
+						message2 = "the movie you want to update is already in database : add your changes here"
+						return render_to_response('findost/editfilmform.html', {'message' : message , 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
+					else:
+						obj = obj2
+						message2 = "the movie you want to update is already in database : add your changes here"
+						return render_to_response('findost/editfilmform.html', {'message' : message , 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))								
+			else:
+				obj.updatedon=datetime.datetime.now()		
+				obj.cameouton=int(yearout)
+				obj.save()
+				return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
+		else:
+			if(title):
+				message2="please fill in the released year"
+			else:
+				message2="please fill in the title"	
+			return render_to_response('findost/editfilmform.html', {'message' : message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
+	else:
+		raise Http404
 
 def report(request,kind,id,sid):
 	if(request.user.is_authenticated()):

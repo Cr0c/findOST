@@ -30,7 +30,6 @@
 		
 		<h2>Edit Information</h2>
 		<br/>
-		<p>{{message2}}</p>
 		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}
 			
@@ -110,7 +109,7 @@
 			
 			<label for="yearout">Came Out On </label>
 			{% if obj.cameouton %}
-			<input name="yearout" id="yearout" type="text" value="{{obj.cameouton}}" />
+			<input name="yearout" id="yearout" type="text" value="{{obj.cameouton.year}}" />
 			{% else %}
 			<input name="yearout" id="yearout" type="text" />			
 			{% endif %}

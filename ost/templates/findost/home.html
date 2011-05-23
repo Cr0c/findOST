@@ -93,7 +93,7 @@
 					<li>
 						<section>
 							{% if episode.show.imageurl %}
-							<div id="thumbsLatest"><img id='{{episode.show.id}}' src='{{episode.show.imageurl}}' size="100%"/></div>
+							<div id="thumbsLatest" style="background-image:url('{{episode.show.imageurl}}');"></div>
 							{% else %}
 							<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}

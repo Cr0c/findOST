@@ -315,31 +315,39 @@ def savechangesepisode(request,kind,id):
 			for field in obj._meta.fields:
 				if(key == field.name and value):
 					obj.__setattr__(field.name , value)
-			if(key.startswith('actor') and value):
-				if(Actor.objects.filter(name=value)):
-					actor = Actor.objects.filter(name=value)[0]
-				else:
-					actor = Actor(name = value)
-				actor.save()
-				obj.show.mainactors.add(actor)
-			if(key=='yearout' and value):
-				obj.cameouton=datetime.datetime(int(value),1,1)
-			if(key=='showtitle' and value):
-				obj.show.title=value
-				showtitle = value
-			if(key=='number'):
-				number=value
-			if(key=='seasonnb'):
-				seasonnb=value
+			
+
 			if(key=='showstatus' and value):
 				if(value == 'True'):
 					obj.show.status=True
 				else:
 					obj.show.status=False		
-
+				if(key.startswith('actor') and value):
+					if(Actor.objects.filter(name=value)):
+						actor = Actor.objects.filter(name=value)[0]
+					else:
+						actor = Actor(name = value)
+					actor.save()
+					obj.show.mainactors.add(actor)
+	
 			for field in obj.show._meta.fields:	
 				if(key == field.name and value):
 					obj.show.__setattr__(field.name , value)	
+
+
+
+
+
+			if(key=='yearout' and value):
+				obj.cameouton=datetime.datetime(int(value),1,1)
+			if(key=='number'):
+				number=value
+			if(key=='seasonnb'):
+				seasonnb=value
+			if(key=='showtitle' and value):
+				obj.show.title=value
+				showtitle = value
+
 
 			if(key.startswith('songtitle') and value):
 				songtitles[key[9:]] = value
@@ -375,7 +383,6 @@ def savechangesepisode(request,kind,id):
 			if(show.episode_set.filter(number=number).filter(seasonnb=seasonnb)):
 				obj2 = show.episode_set.filter(number=number).filter(seasonnb=seasonnb)[0]
 				if(obj.id == obj2.id):
-					obj.show = show
 					obj.show.save()
 					obj.updatedon=datetime.datetime.now()	
 					obj.save()

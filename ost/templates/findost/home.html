@@ -92,8 +92,8 @@
 					{% for episode in lastepisodes %}
 					<li>
 						<section>
-							{% if episode.imageurl %}
-							<div id="thumbsLatest"><img id='{{episode.show.id}}' src='{{episode.imageurl}}' size="100%"/></div>
+							{% if episode.show.imageurl %}
+							<div id="thumbsLatest"><img id='{{episode.show.id}}' src='{{episode.show.imageurl}}' size="100%"/></div>
 							{% else %}
 							<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}

@@ -119,12 +119,18 @@ def find_results_set(query):
 			temp = temp + c
 	results_setMovie = Film.objects.all()
 	results_setShow = Show.objects.all()
-	for w in querywords:
-		results_setMovie = results_setMovie.filter(title__contains=w)
-		results_setShow = results_setShow.filter(title__contains=w)
-	results_setMovie = Film.objects.filter(title__contains=query).update(results_setMovie)
-	results_setShow = Show.objects.filter(title__contains=query).update(results_setShow)
-	return results_setMovie[0:20], results_setShow[0:20]
+	if(results_setMovie.filter(title__contains=query)):
+		results_setMovie = results_setMovie.filter(title__contains=query)
+	else:
+		for w in querywords:
+			results_setMovie = results_setMovie.filter(title__contains=w)
+	
+	if(results_setShow.filter(title__contains=query)):
+		results_setShow = results_setShow.filter(title__contains=query)
+	else:
+		for w in querywords:
+			results_setShow = results_setShow.filter(title__contains=w)
+	return results_setMovie.order_by('title')[0:20], results_setShow.order_by('title')[0:20]
 
 
 def results(request):

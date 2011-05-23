@@ -10,8 +10,8 @@
 		<section id="intro">
 			<a href='/home'><div id='header' class='center'></div></a>
 		</section>
-		<h2>Create a new user account</h2>
-		<h3>Enter the following fields</h3>
+		<div><h2>Create a new user account</h2></div>
+		<div><h3>Enter the following fields</h3></div>
 		
 		{% if error %}
 		<div id='error'>{{error}}<div>
@@ -19,24 +19,27 @@
 		
 		<form action='/subscribe' method='post' name='subform' id='subform'>
 			{% csrf_token %}
-		<ul>
-			<li><label for="username">User Name (12 characters max.)</label>
-			<input name="username" id="username" type="text" required /></li>
+		<div id="newsubform">
+		<ul id="subformlabels">
+			<li><label for="username">User Name (12 characters max.)</label></li>
+			<li><label for="passwd">Password (6 characters min.)</label></li>
+			<li><label for="confpasswd">Confirm Password</label></li>
+			<li><label for="mail">Mail Address</label></li>
+		</ul>	
+		<ul id="subforminputs">
+			<li><input name="username" id="username" type="text" required /></li>
 			
-			<li><label for="passwd">Password (6 characters min.)</label>
-			<input name="passwd" id="passwd" type="password" required /></li>
+			<li><input name="passwd" id="passwd" type="password" required /></li>
 			
-			<li><label for="confpasswd">Confirm Password</label>
-			<input name="confpasswd" id="confpasswd" type="password" required /></li>
+			<li><input name="confpasswd" id="confpasswd" type="password" required /></li>
 		
-			<li><label for="mail">Mail Address</label>
-			<input name="mail" id="mail" type="email" required/></li>
+			<li><input name="mail" id="mail" type="email" required/></li>
 			
 			<li id="confirm"><input type="submit" value="Confirm"/></li>
 		</ul>
+		</div>
 	</form>
 		
 		
 	</body>
 </html>
-

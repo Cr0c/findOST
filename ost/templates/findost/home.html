@@ -17,12 +17,27 @@
 	<nav>
 		<div id='menu'>
 			<ul>
-				<li>{{message}}</li>
+				<li><b>{{message}}</b></li>
 				{% if isauth %}
-				<li><a href="/logout">Log out</a></li>
+				<li><a href="/logout"><b>Log out</b></a></li>
 				{% else %}
-				<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
-				<li><a href="/showsubscribe">New User</a></li>
+				<li><a href="#" class='show-button'><b>Log in</b></a><div id="loginform" style="display:none;"><div id="loginscroll">
+				<form action='/login' method='post' name='loginform' id='loginform'>
+					{% csrf_token %}
+					<p>
+						<label for="username">User Name</label>
+						<input name="username" id="username" type="text" required />
+
+						<label for="passwd">Password</label>
+						<input name="passwd" id="passwd" type="password" required />
+
+						<input name="path" id="path" type="hidden" value="{{path}}" />
+
+						<input type="submit" value="log in"/>
+					</p>
+				</form>
+				</div></div></li>
+				<li><a href="/showsubscribe"><b>New User</b></a></li>
 				{% endif %}
 			</ul>
 		</div>
@@ -54,17 +69,17 @@
 				<ul>
 					{% for film in lastfilms %}
 					<li>
-						<div class='latest'>
+						<section>
 							{% if film.imageurl %}
-							<div><img id='{{film.id}}' src='{{film.imageurl}}'/></div>
+							<img id='{{film.id}}' src='{{film.imageurl}}'/>
 							{% else %}
-							<div><img id='{{film.id}}' src='/static/img/unknown.jpg'/></div>
+							<img id='{{film.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}
-							<div class='description'>
-								<a href="/findost/film/details/{{film.id}}" >{{ film.title }}</a><br/>
-								came out on : {{film.cameouton}}
-							</div>	
-						</div>
+							<div class="description">
+							<a href="/findost/film/details/{{film.id}}" >{{ film.title }}</a><br/>
+							came out on : {{film.cameouton}}
+							</div>
+						</section>
 					</li>
 					{% endfor %}
 				</ul>
@@ -77,21 +92,17 @@
 				<ul>
 					{% for episode in lastepisodes %}
 					<li>
-						<div class='latest'>
+						<section>
 							{% if episode.imageurl %}
-							<div class="table thumb">
-								<img id='{{episode.show.id}}' src='{{episode.imageurl}}'/>
-							</div>
+							<img id='{{episode.show.id}}' src='{{episode.imageurl}}'/>
 							{% else %}
-							<div class='table thumb'>
-								<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
-							</div>
+							<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
 							{% endif %}
 							<div class='description'>
 								<a href="/findost/episode/details/{{episode.id}}" >{{ episode.show.title }}</a><br/>
 								season {{ episode.seasonnb }} episode {{ episode.number }}
 							</div>
-						</div>
+						</section>
 					</li>
 					{% endfor %}
 				</ul>
@@ -105,9 +116,10 @@
 			}
 		</script>
 		<script>
+		$('.show-button').click(
 			function showlogin(){
-				$('#loginform').load('/showlogin?path=' + encodeURIComponent('{{path}}'));
-			}
+				$('#loginform').toggle('fast');
+			});
 		</script>
 	</body>
 </html>

@@ -14,18 +14,18 @@
 		<nav>
 			<div id='menu'>
 				<ul>
-					<li>{{message}}</li>
+					<li><b>{{message}}</b></li>
 					{% if isauth %}
-					<li><a href="/logout">Log out</a></li>
+					<li><a href="/logout"><b>Log out</b></a></li>
 					{% else %}
-					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
-					<li><a href="/showsubscribe">New User</a></li>
+					<li><a href="#" onclick='showlogin()'><b>Log in</b></a><div id="loginform"></div></li>
+					<li><a href="/showsubscribe"><b>New User</b></a></li>
 					{% endif %}
-					<li id="find2"><a href="/findost/film">Search for a movie</a></li>
-					<li id="find2"><a href="/findost/show">Search for a show</a></li>
 				</ul>
 			</div>
 		</nav>
+		
+		<div>
 		<ul>
 		<br/>
 		{% if isauth %}
@@ -104,15 +104,10 @@
 			</li>
 		{% endif %}
 		</ul>
+		</div>
 		
 		<script>
 			function showplayer(id){
-				if($('#player'+id).css('display') == 'none'){
-					$('#link'+id).html('hide player');
-				}
-				else{
-					$('#link'+id).html('listen to this song !');
-				}
 				$('#player'+id).toggle('fast');
 			}
 		</script>

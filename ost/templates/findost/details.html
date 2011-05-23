@@ -73,7 +73,8 @@
 				<ul>
 					{% for song in obj.songs.all %}	
 						<li>
-							{{song.title}} by {{song.artist}}
+							{{song.title}} by {{song.artist}}<br/>
+							Song posted by {{song.postedby}}							
 							{% if song.songid > 0 %}
 							<div style='display:none;' id='player{{song.songid}}'>
 								<object width="492" height="40"> 
@@ -83,12 +84,14 @@
 								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="492" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
 								</object>
 								
+								{% if isauth %}	
 									{% if user == song.reportedby %}
 									<a href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report<a>
 									{% endif %}
-								{% if not song.reported %} 
-								<a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a>
-								{% endif %}
+									{% if not song.reported %} 
+									<a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a>
+									{% endif %}
+								{% endif %}	
 							</div>	
 												
 							<span>
@@ -99,8 +102,8 @@
 							{% endif %}	
 							{% else %}
 								{% if song.songid == None %}
-								<span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}})">Check Track Availability</a></span>
-								<!--<span><a href="{{obj.id}}/{{song.id}}/checktrack">Check track availability</a></span>-->
+								<span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}});return false;">Check Track Availability</a></span>
+								
 								<div id="checked{{song.id}}"></div>
 								{% endif %}
 							{% endif %}

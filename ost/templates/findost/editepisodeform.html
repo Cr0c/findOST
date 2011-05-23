@@ -45,14 +45,6 @@
 						
 			<br/>
 			
-	<!--		<label for="nbseason">Number of Seasons of the Show</label>
-			{% if obj.show.nbseason %}
-			<input name="nbseason" id="nbseason" type="text" value="{{obj.show.nbseason}}" />
-			{% else %}
-			<input name="nbseason" id="nbseason" type="text"/>			
-			{% endif %}
-			<br/>
-		-->	
 			<label for="startingyear">Starting Year of the Show</label>
 			{% if obj.show.startingyear %}
 			<input name="startingyear" id="startingyear" type="text" value="{{obj.show.startingyear}}" />
@@ -129,24 +121,34 @@
 			{% endif %}
 			<br/>
 			
-			<label for="yearout">Came Out On </label>
+			<label for="cameouton">Came Out On </label>
 			{% if obj.cameouton %}
-			<input name="yearout" id="yearout" type="text" value="{{obj.cameouton.year}}" />
-			{% else %}
-			<input name="yearout" id="yearout" type="text" />			
+				{% if obj.cameouton.day < 10 %}
+					{%if obj.cameouton.month < 10 %}
+						<input name="cameouton" id="cameouton" type="date" value="{{obj.cameouton.year}}-0{{obj.cameouton.month}}-0{{obj.cameouton.day}}" />
+					{% else %}
+						<input name="cameouton" id="cameouton" type="date" value="{{obj.cameouton.year}}-{{obj.cameouton.month}}-0{{obj.cameouton.day}}" />
+					{% endif %}
+				{% else %}
+					{%if obj.cameouton.month < 10 %}
+						<input name="cameouton" id="cameouton" type="date" value="{{obj.cameouton.year}}-0{{obj.cameouton.month}}-{{obj.cameouton.day}}" />
+					{% else %}
+						<input name="cameouton" id="cameouton" type="date" value="{{obj.cameouton.year}}-{{obj.cameouton.month}}-{{obj.cameouton.day}}" />
+					{% endif %}
+				{% endif %}
 			{% endif %}
 			<br/>
 			
-			<label for="showstatus">Active</label>
+			<label for="showstatus">Still Running</label>
 			{% if obj.show.status == True %}
-			<input name="showstatus" id="showstatus" type="radio" value="True" checked /> True <br/>
+			<input name="showstatus" id="showstatus" type="radio" value="True" Checked /> True 
 			<input name="showstatus" id="showstatus" type="radio" value="False" /> False
 			{% else %}
 			{% if obj.show.status == False %}
-			<input name="showstatus" id="showstatus" type="radio" value="True"  /> True <br/>
-			<input name="showstatus" id="showstatus" type="radio" value="False" checked /> False
+			<input name="showstatus" id="showstatus" type="radio" value="True"  /> True 
+			<input name="showstatus" id="showstatus" type="radio" value="False" Checked /> False
 			{% else %}
-			<input name="showstatus" id="showstatus" type="radio" value="True"  /> True <br/>
+			<input name="showstatus" id="showstatus" type="radio" value="True"  /> True 
 			<input name="showstatus" id="showstatus" type="radio" value="False" /> False
 			{% endif %}
 			{% endif %}

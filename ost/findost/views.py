@@ -31,7 +31,7 @@ def home(request):
 	isauth = request.user.is_authenticated()
 	path = request.path
 	if isauth:
-		message="You are logged in as " + request.user.username
+		message="Logged in as " + request.user.username
 	else:
 		message="You are not logged in"
 	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes, 'message': message, 'isauth': isauth, 'path' : path}, context_instance=RequestContext(request))
@@ -146,12 +146,14 @@ def showdetails(request,id):
 	path = request.path
 	isauth = request.user.is_authenticated()
 	if(isauth):
-		message = "Logged in as " + request.user.username
+		user = request.user.username
+		message = "Logged in as " + user
 	else:
-		message = ''
+		message = 'You are not logged in'
+		user = None
 	show = get_object_or_404(Show,pk = id)
 	nbseason = range(1, show.nbseason+1)
-	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'path' : path, 'message':message})
+	return render_to_response('findost/showdetails.html',{'show' : show, 'nbseason' : nbseason, 'isauth':isauth, 'user':user, 'path' : path, 'message':message},context_instance=RequestContext(request))
 
 def loadepisodes(request,id):
 	if(request.is_ajax()):
@@ -293,6 +295,9 @@ def savechanges(request,kind,id):
 
 def savechangesepisode(request,kind,id):
 	isauth = request.user.is_authenticated()
+	showtitle=''
+	number = ''
+	seasonnb= ''
 	if(isauth):
 		message="You are logged in as " + request.user.username
 		objid=request.POST['objid']
@@ -307,7 +312,6 @@ def savechangesepisode(request,kind,id):
 		for key in data:
 			value = data[key]
 			value = normalize(value)
-			showtitle = ''
 			for field in obj._meta.fields:
 				if(key == field.name and value):
 					obj.__setattr__(field.name , value)
@@ -323,6 +327,10 @@ def savechangesepisode(request,kind,id):
 			if(key=='showtitle' and value):
 				obj.show.title=value
 				showtitle = value
+			if(key=='number'):
+				number=value
+			if(key=='seasonnb'):
+				seasonnb=value
 			if(key=='showstatus' and value):
 				if(value == 'True'):
 					obj.show.status=True
@@ -353,17 +361,52 @@ def savechangesepisode(request,kind,id):
 				song.save()
 			
 			obj.songs.add(song)
+		
+		
+			
+
 		if(showtitle and number and seasonnb):
 			if(Show.objects.filter(title=showtitle)):
-				show = Show.objects.filter(title=showtitle)
-				if(show.episode_set.filter(number=int(number)).filter(seasonnb=seasonnb)):
-					obj = show.episode_set.filter(number=int(number)).filter(seasonnb=int(seasonnb))[0]
-					message2 = 'The Episode you want to add' 
-					return render_to_response('findost/editepisodeform.html', {'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
-			obj.show.save()	
-		obj.updatedon=datetime.datetime.now()	
-		obj.save()
-		return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
+				show = Show.objects.filter(title=showtitle)[0]
+			else:
+				show = obj.show	
+			if(int(show.nbseason) < int(obj.seasonnb)):
+				show.nbseason = obj.seasonnb
+			if(show.episode_set.filter(number=number).filter(seasonnb=seasonnb)):
+				obj2 = show.episode_set.filter(number=number).filter(seasonnb=seasonnb)[0]
+				if(obj.id == obj2.id):
+					obj.show = show
+					obj.show.save()
+					obj.updatedon=datetime.datetime.now()	
+					obj.save()
+					return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 	
+				else:
+					if(id == '0'):
+						obj.show.delete()					
+						obj.delete()
+						obj = obj2
+						message2 = "the episode you want to update is already in database : add your changes here"
+						return render_to_response('findost/editepisodeform.html', {'message' : message , 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
+					else:
+						obj = obj2
+						message2 = "the episode you want to update is already in database : add your changes here"
+						return render_to_response('findost/editepisodeform.html', {'message' : message , 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))								
+			else:
+				obj.show.delete()
+				obj.show = show
+				obj.show.save()
+				obj.updatedon=datetime.datetime.now()		
+				obj.save()
+				return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
+		
+		else:
+			if( not showtitle):
+				message2="please fill in the Show title"
+			elif (not number):
+				message2="please fill in the Episode number"
+			else:
+				message2="please fill in the Episode Season number"						
+			return render_to_response('findost/editepisodeform.html', {'message' : message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
 	else:
 		raise Http404	
 

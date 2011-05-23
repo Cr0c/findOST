@@ -1,31 +1,47 @@
 <!DOCTYPE HTML>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html lang="en">
+
+
+<head>
 		<script type="text/javascript" src="/static/jquery.js"></script>
-		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="/static/style.css" />
+		<link rel="stylesheet" type="text/css" href="/static/style.css" />
 		<title>FindOST.com | {{show.title}}</title>
-	</head>
-	<body>
-		<header>
-			<a href='/home'><div id='header' class='center'></div></a>
-		</header>
+</head>
+
+<body>
+	<header>
+		<a href='/home'><div id='header' class='center'></div></a>
+	</header>
 		
-		<nav>
-			<div id='menu'>
-				<ul>
-					<li>{{message}}</li>
-					{% if isauth %}
-					<li><a href="/logout">Log out</a></li>
-					{% else %}
-					<li><a href="#" onclick='showlogin()'>Log in</a><div id="loginform"></div></li>
-					<li><a href="/showsubscribe">New User</a></li>
-					{% endif %}
-					<li id="find2"><a href="/findost/film">Search for a movie</a></li>
-					<li id="find2"><a href="/findost/show">Search for a show</a></li>
-				</ul>
-			</div>
-		</nav>
+	<nav>
+		<div id='menu'>
+			<ul>
+				<li><b>{{message}}</b></li>
+				{% if isauth %}
+				<li><a href="/logout"><b>Log out</b></a></li>
+				{% else %}
+				<li><a href="#" class='show-button'><b>Log in</b></a><div id="loginform" style="display:none;"><div id="loginscroll">
+				<form action='/login' method='post' name='loginform' id='loginform'>
+					{% csrf_token %}
+					<p>
+						<label for="username">User Name</label>
+						<input name="username" id="username" type="text" required />
+
+						<label for="passwd">Password</label>
+						<input name="passwd" id="passwd" type="password" required />
+
+						<input name="path" id="path" type="hidden" value="{{path}}" />
+
+						<input type="submit" value="log in"/>
+					</p>
+				</form>
+				</div></div></li>
+				<li><a href="/showsubscribe"><b>New User</b></a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+	
 		<br>
 		<br>
 		<div>{{show.title}}</div>
@@ -56,8 +72,13 @@
 			})
 		</script>
 		<script>
+		$('.show-button').click(
 			function showlogin(){
-				$('#loginform').load('/showlogin?path=' + encodeURIComponent('{{path}}'));
+				$('#loginform').toggle('fast');
+			});
+			function check(gid,id){
+				$('#checked' + id).load(gid + '/' + id + '/checktrack');
+				$('#span' + id).html('');
 			}
 		</script>
 	</body>

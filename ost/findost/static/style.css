@@ -34,7 +34,9 @@ h3 {
 	color: #2554C7;
 	font-size: 18px;  
 	line-height: 22px;  
-	padding: 0px 0;  
+	padding-left: 6px; 
+	padding-top: 2px;
+	padding-bottom: 0px;
 }  
 
 p {
@@ -236,7 +238,8 @@ a:hover{
 aside { 
 	display: block;
 	float: right; 
-    width: 300px;  
+    width: 300px; 
+	margin-bottom: 100px;
 }
 
 #allresults {

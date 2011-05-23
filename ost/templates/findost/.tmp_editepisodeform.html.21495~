@@ -30,7 +30,6 @@
 		
 		<h2>Edit Information</h2>
 		<br/>
-		<p>{{message2}}</p>
 		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}
 
@@ -45,15 +44,15 @@
 						
 			<br/>
 			
-	<!--		<label for="nbseason">Number of Seasons of the Show</label>
+			<label for="nbseason">Number of Seasons of the Show</label>
 			{% if obj.show.nbseason %}
 			<input name="nbseason" id="nbseason" type="text" value="{{obj.show.nbseason}}" />
 			{% else %}
 			<input name="nbseason" id="nbseason" type="text"/>			
 			{% endif %}
 			<br/>
-		-->	
-			<label for="startingyear">Starting Year of the Show</label>
+			
+			<label for="staringyear">Starting Year of the Show</label>
 			{% if obj.show.startingyear %}
 			<input name="startingyear" id="startingyear" type="text" value="{{obj.show.startingyear}}" />
 			{% else %}

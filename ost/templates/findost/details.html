@@ -42,7 +42,7 @@
 		</div>
 	</nav>
 		
-		<div>
+		<div id="playerLinks">
 		<ul>
 		<br/>
 		{% if isauth %}
@@ -156,7 +156,7 @@
 								
 								{% if isauth %}	
 									{% if user == song.reportedby %}
-									<a href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report<a>
+									<a href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report</a>
 									{% endif %}
 									{% if not song.reported %} 
 									<a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a>

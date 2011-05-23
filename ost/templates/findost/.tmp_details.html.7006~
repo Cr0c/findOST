@@ -120,7 +120,7 @@
 							{% endif %}	
 							{% else %}
 								{% if song.songid == None %}
-								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}}); return false;">Check Track Availability</a></span></span>
+								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}})">Check Track Availability</a></span></span>
 								<div id="checked{{song.id}}"></div>
 								{% endif %}
 							{% endif %}
@@ -166,10 +166,6 @@
 			function showlogin(){
 				$('#loginform').toggle('fast');
 			});
-			function check(gid,id){
-				$('#checked' + id).load(gid + '/' + id + '/checktrack');
-				$('#span' + id).html('');
-			}
 		</script>
 	</body>
 </html>

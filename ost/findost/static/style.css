@@ -298,8 +298,13 @@ aside {
 }
 
 #playerLinks {
-	float: right;
+	float: left;	
 	margin-right: 20px;
 }
 
+#postedBy{
+	margin-left: 50px;
+	margin-right: 20px;
+	float:right;
+}
 

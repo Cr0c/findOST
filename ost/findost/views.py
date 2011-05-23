@@ -201,6 +201,12 @@ def edit(request,kind,id):
 		raise Http404
 		
 def checktrack(request,kind,gid,id):
+	isauth = request.user.is_authenticated()
+	if(isauth):
+		user = request.user.username
+	else:
+		user=None
+
 	if(request.is_ajax()):
 		file = open('../DB/ids','a')
 		song = get_object_or_404(Song, pk = id)
@@ -251,7 +257,7 @@ def checktrack(request,kind,gid,id):
 			song.songid=-1
 			song.save()
 		file.close()
-		return render_to_response('findost/checktrackok.html',{'songid':song.songid})
+		return render_to_response('findost/checktrackok.html',{'id':gid, 'song': song, 'user':user, 'isauth':isauth})
 	else:
 		raise Http404
 

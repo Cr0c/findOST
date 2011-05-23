@@ -31,6 +31,11 @@
 		<div>{{show.title}}</div>
 		<div>
 			<ul>
+				{% if isauth %}
+				<li>
+					<a href='/findost/episode/details/0/edit?title={{show.title}}'>Add a New Episode</a>
+				</li>
+				{% endif %}
 			{% for i in nbseason %}
 				<li><a href='#' onclick='showepisodes({{i}});return false;'>season {{i}}</a><div id='season{{i}}'  class='notloaded' ></div></li>
 			{% endfor %}

@@ -9,7 +9,7 @@ header, footer, aside, nav, article {
 
 body {
 	background-image:url('/static/img/mixer_en_cans.jpg');
-	/*background-size: 100%;*/
+	background-size: 100%;
 	/*background-color: #eee;*/
 	background-attachment: fixed;
 	width: 940px;

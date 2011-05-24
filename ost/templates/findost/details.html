@@ -42,19 +42,24 @@
 		</div>
 	</nav>
 		
-		<div>
+
+	<div>
 		<ul>
 		<br/>
 		{% if isauth %}
 		<a href='{{obj.id}}/edit'>Add more info !</a>
+		{% else %}
+		<span>Log in to Add more info </span>
 		{% endif %}
-	
+		
+		<div id="detailsImage">
 		{% if obj.show.imageurl %}
-			<img alt='image' src='{{obj.show.imageurl}}' />
+		<img src="{{obj.show.imageurl}}" height="300px">
 		{% endif %}
 		{% if obj.imageurl %}
-			<img alt='image' src='{{obj.imageurl}}' />
+		<img src="{{obj.imageurl}}" width="300px">
 		{% endif %}
+		</div>
 					
 		{% if obj.show.title %}
 			<li>
@@ -168,7 +173,7 @@
 								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Listen to this song !</a>	
 							</span>
 							{% if song.reported %}
-								<span>Reported by {{song.reportedby}}</span>
+								<span id="reported">Reported by {{song.reportedby}}</span>
 							{% endif %}	
 							{% else %}
 								{% if song.songid == None %}

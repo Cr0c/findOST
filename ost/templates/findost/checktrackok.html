@@ -11,15 +11,19 @@
 	
 	{% if isauth %}	
 		{% if user == song.reportedby %}
+		<span id="playerLinks">
 		<a href='{{id}}/unreport/{{song.id}}'>Cancel Report<a>
+		</span>	
 		{% endif %}
-		{% if not song.reported %} 
+		{% if not song.reported %}
+		<span id="playerLinks"> 
 		<a href='{{id}}/report/{{song.id}}' >Wrong link !</a>
+		</span>
 		{% endif %}
 	{% endif %}
 				
 </div>						
-<span>
+<span id="playerLinks">
 	<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Hide player</a>	
 </span>
 {% endif %}

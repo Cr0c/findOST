@@ -10,7 +10,9 @@
 		{% else %}
 		<h4>No matching movie found</h4>
 		{% if isauth %}
-		<a href='/findost/film/details/0/edit?title={{newtitle}}'>Add a New Film</a>
+		<a href='/findost/film/details/0/edit?title={{newtitle}}'>Add a New Movie</a>
+		{% else %}
+		<span>Log in to add a new movie</span>
 		{% endif %}
 		{% endif %}
 	</div>
@@ -26,6 +28,8 @@
 		<h4>No matching show found</h4>
 		{% if isauth %}
 		<a href='/findost/episode/details/0/edit?title={{newtitle}}'>Add a New Show</a>
+		{% else %}
+		<span>Log in to add a new show</span>
 		{% endif %}
 		{% endif %}
 	</div>

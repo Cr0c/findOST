@@ -48,13 +48,15 @@
 		{% if isauth %}
 		<a href='{{obj.id}}/edit'>Add more info !</a>
 		{% endif %}
-	
+		
+		<div id="detailsImage">
 		{% if obj.show.imageurl %}
-			<img alt='image' src='{{obj.show.imageurl}}' />
+		<img src="{{obj.show.imageurl}}" height="300px">
 		{% endif %}
 		{% if obj.imageurl %}
-			<img alt='image' src='{{obj.imageurl}}' />
+		<img src="{{obj.imageurl}}" width="300px">
 		{% endif %}
+		</div>
 					
 		{% if obj.show.title %}
 			<li>

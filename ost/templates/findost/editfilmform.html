@@ -44,8 +44,9 @@
 		{% endif %}
 		
 		
-		<div class="detailsFields editFormFilm">
+		
 		<form action='save' name="edit" id="edit" method="post">
+			<div class="detailsFields editFormFilm">
 			{% csrf_token %}
 			
 			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />
@@ -164,6 +165,7 @@
 			<div>
 			<input type='submit' value='Save Changes'/>
 			</div>
+			
 		</form>
 		
 		<div id='temp' style='display:none;'></div>

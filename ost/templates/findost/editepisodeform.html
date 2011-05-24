@@ -44,8 +44,9 @@
 		{% endif %}
 		
 		
-		<div class="detailsFields editFormShow" >
+	
 		<form action='save' name="form" id="form" method="post">
+				<div class="detailsFields editFormShow" >
 			{% csrf_token %}
 
 			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />

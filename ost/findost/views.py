@@ -335,7 +335,8 @@ def savechangesepisode(request,kind,id):
 			
 		for key in data:
 			value = data[key]
-			value = normalize(value)
+			if(key != 'imageurl'):
+				value = normalize(value)
 			for field in obj._meta.fields:
 				if(key == field.name and value):
 					obj.__setattr__(field.name , value)
@@ -488,10 +489,9 @@ def savechangesfilm(request,kind,id):
 			if(key=='yearout'):
 				yearout=value	
 			
-
 			if(key.startswith('songtitle') and value):
 				songtitles[key[9:]] = value
-			if(key.startswith('songartist') and value):
+			if(key.startswith('songartist')):
 				songartists[key[10:]] = value		
 
 		for key in songtitles:

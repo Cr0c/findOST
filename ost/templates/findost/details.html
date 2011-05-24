@@ -119,22 +119,21 @@
 			<li>Genre : {{obj.genre}}</li>
 		{% endif %}
 		
-		{% if obj.main_actors.all %}
+		{% if obj.mainactors.all %}
 			<li>
-				main actors :
+				Main Actors :
 				<ul>
-					<li>b</li>
-					{% for actor in obj.main_actors.all %}
+					{% for actor in obj.mainactors.all %}
 						<li>{{actor.name}}</li>
 					{% endfor %}
 				</ul>
 			</li>
 		{% endif %}
-		{% if obj.show.main_actors.all %}
+		{% if obj.show.mainactors.all %}
 			<li>
-				main actors :
+				Main Actors :
 				<ul>
-					{% for actor in obj.show.main_actors.all %}
+					{% for actor in obj.show.mainactors.all %}
 						<li>{{actor.name}}</li>
 					{% endfor %}
 				</ul>

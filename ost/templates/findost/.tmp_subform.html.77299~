@@ -19,7 +19,7 @@
 		
 		<form action='/subscribe' method='post' name='subform' id='subform'>
 			{% csrf_token %}
-		<div id="subform">
+		<div id="newsubform">
 		<ul id="subformlabels">
 			<li><label for="username">User Name (12 characters max.)</label></li>
 			<li><label for="passwd">Password (6 characters min.)</label></li>

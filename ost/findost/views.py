@@ -190,7 +190,7 @@ def edit(request,kind,id):
 				obj=Film(title=newtitle, updatedon=datetime.datetime.now())
 				obj.save()
 				message2 = "Fill in the information of the movie you want to add"
-			return render_to_response('findost/editfilmform.html', {'message2' : message2, 'message' : message, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
+			return render_to_response('findost/editfilmform.html', {'id' : id, 'message2' : message2, 'message' : message, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
 		if(kind == 'episode'):
 			if(id != '0'):
 				obj = get_object_or_404(Episode, pk = id)
@@ -203,10 +203,24 @@ def edit(request,kind,id):
 				obj.updatedon=datetime.datetime.now()
 				obj.save()
 				message2 = "Fill in the information of the show you want to add"
-			return render_to_response('findost/editepisodeform.html', {'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
+			return render_to_response('findost/editepisodeform.html', {'id' : id, 'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
 	else:
 		raise Http404
-		
+
+def cancel(request,kind,id):
+	isauth = request.user.is_authenticated()
+	if(isauth and id == '0'):
+		objid=request.POST['objid']
+		if(kind == 'episode'):
+			obj = get_object_or_404(Episode, pk = objid)
+			obj.show.delete()
+		if(kind == 'film'):
+			obj = get_object_or_404(Film, pk = objid)
+		obj.delete()
+		return HttpResponseRedirect('/home')
+	else:
+		raise Http404		
+
 def checktrack(request,kind,gid,id):
 	isauth = request.user.is_authenticated()
 	if(isauth):
@@ -302,7 +316,7 @@ def savechangesepisode(request,kind,id):
 		message="You are logged in as " + request.user.username
 		objid=request.POST['objid']
 		obj = get_object_or_404(Episode, pk = int(objid))
-		obj.show.mainactors.clear()	
+		obj.show.mainactors.clear()
 		obj.songs.clear()	
 	
 		data = request.POST	
@@ -376,7 +390,10 @@ def savechangesepisode(request,kind,id):
 				show = Show.objects.filter(title=showtitle)[0]
 			else:
 				show = obj.show	
-			if(int(show.nbseason) < int(obj.seasonnb)):
+			
+			if(not show.nbseason or int(show.nbseason) < int(obj.seasonnb)):
+				show.nbseason = obj.seasonnb
+			else:
 				show.nbseason = obj.seasonnb
 			if(show.episode_set.filter(number=number).filter(seasonnb=seasonnb)):
 				obj2 = show.episode_set.filter(number=number).filter(seasonnb=seasonnb)[0]
@@ -397,10 +414,14 @@ def savechangesepisode(request,kind,id):
 						message2 = "the episode you want to update is already in database : add your changes here"
 						return render_to_response('findost/editepisodeform.html', {'message' : message , 'message2' : message2, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))								
 			else:
-				obj.show.delete()
+				print str(obj.show.id)				
+				showtemp = obj.show
 				obj.show = show
+				if(Show.objects.filter(title=showtitle)):
+					showtemp.delete()
+				print str(obj.show.id)				
 				obj.show.save()
-				obj.updatedon=datetime.datetime.now()		
+				obj.updatedon=datetime.datetime.now()
 				obj.save()
 				return HttpResponseRedirect('/findost/' + kind + '/details/' + str(obj.id)) 
 		

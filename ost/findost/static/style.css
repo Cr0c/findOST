@@ -288,7 +288,7 @@ aside {
 	padding-left: 0px;
 }
 
-#newsubform {
+#subform {
 	width: 400px;
 	height: 130px;
 		display: block;
@@ -378,3 +378,6 @@ aside {
     -webkit-border-radius: 5px;
 }
 
+a.confirm {
+	margin-left: 8px;
+}

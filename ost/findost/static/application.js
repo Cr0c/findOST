@@ -41,8 +41,19 @@
 	$.fn.appendRemoveLink = function() {
 		return $(this).each(function() {
 			div = $(this);
-			$('<a href="#" class="remove">×</a>').click(function(){
+			$('<a href="#" class="confirm" style="display:none;">Cancel	</a>').click(function(){
+				$(this).siblings('.remove').show();
+				$(this).siblings('.confirm').hide();
+				$(this).hide();
+				return false;
+			}).appendTo(div);
+			$('<a href="#" class="confirm" style="display:none;">Confirm</a>').click(function(){
 				$(this).removeObject();
+				return false;
+			}).appendTo(div);
+			$('<a href="#" class="remove">×</a>').click(function(){
+				$(this).hide();
+				$(this).siblings('.confirm').show();
 				return false;
 			}).appendTo(div);
 		});

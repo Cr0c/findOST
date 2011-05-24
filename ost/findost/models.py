@@ -66,8 +66,8 @@ class Film(models.Model):
 	reported = models.CharField(max_length = 15)
 	reported.null = True
 	reportedby = models.CharField(max_length = 15)
-	reportedby.null = True	
-
+	reportedby.null = True
+		
 	def __unicode__(self):
 		return self.title
 
@@ -117,5 +117,18 @@ class Episode(models.Model):
 	
 
 	def __unicode__(self):
-		return ('season ' + str(self.seasonnb) + ' episode ' + str(self.number) + ' : ' + self.title)
+		return ('season ' + str(self.seasonnb) + ' episode ' + str(self.number))
 
+class Comment(models.Model):
+	title = models.CharField(max_length = 20)
+	body = models.CharField(max_length = 300)
+	postedby = models.CharField(max_length = 20)
+	postedon = models.DateTimeField('posted on')
+	episode = models.ForeignKey(Episode)
+	episode.null = True
+	film = models.ForeignKey(Film)
+	film.null = True
+	
+	def __unicode__(self):
+		return self.title
+	

@@ -1,0 +1,29 @@
+{% if song.songid == -1 %}
+<p>Not found on Grooveshark</p>
+{% else %}
+<div id='player{{song.songid}}'>
+	<object width="492" height="40"> 
+	<param name="movie" value="http://listen.grooveshark.com/songWidget.swf"> 
+	<param name="wmode" value="window"> <param name="allowScriptAccess" value="always"> 
+	<param name="flashvars" value="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0"> 
+	<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="492" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
+	</object>
+	
+	{% if isauth %}	
+		{% if user == song.reportedby %}
+		<span id="playerLinks">
+		<a href='{{id}}/unreport/{{song.id}}'>Cancel Report<a>
+		</span>	
+		{% endif %}
+		{% if not song.reported %}
+		<span id="playerLinks"> 
+		<a href='{{id}}/report/{{song.id}}' >Wrong link !</a>
+		</span>
+		{% endif %}
+	{% endif %}
+				
+</div>						
+<span id="playerLinks">
+	<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Hide player</a>	
+</span>
+{% endif %}

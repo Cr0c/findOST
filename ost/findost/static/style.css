@@ -14,6 +14,7 @@ body {
 	background-attachment: fixed;
 	width: 940px;
 	margin: 0 auto;
+	margin-bottom : 30px;
 	border : grey solid 0px;
 	font: 13px/22px Helvetica, Arial, sans-serif;
 }

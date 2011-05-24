@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render_to_response
-from findost.models import Film, Show, Episode, Song, Artist,Actor
+from findost.models import Film, Show, Episode, Song, Artist,Actor,Comment
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.http import Http404,HttpResponseRedirect
@@ -37,27 +37,31 @@ def home(request):
 	return render_to_response('findost/home.html', {'lastfilms': lastfilms, 'lastepisodes': lastepisodes, 'message': message, 'isauth': isauth, 'path' : path}, context_instance=RequestContext(request))
 
 def showlogin(request):
-	path = request.GET['path']
-	if(request.is_ajax()):
+	if(request.is_ajax() and request.method == 'GET'):
+		path = request.GET['path']
 		return render_to_response('findost/loginform.html', {'path': path}, context_instance=RequestContext(request))
+	else:
+		raise Http404
 	
 def log_in(request):
-	username=request.POST['username']
-	passwd = request.POST['passwd']
-	path = request.POST['path']
-	#verifier qu'il n'y a pas de caracteres speciaux
-
-	user = authenticate(username=username,password=passwd)
-	if user is not None:
-		if user.is_active:
-			login(request, user)
-			return HttpResponseRedirect(path)
-		else:
-			pass
-			# Return a 'disabled account' error message
-	else:
-		return render_to_response('findost/loginerror.html', {'path' : path}, context_instance=RequestContext(request))		
+	if(request.method == 'POST'):
+		username=request.POST['username']
+		passwd = request.POST['passwd']
+		path = request.POST['path']
+		#verifier qu'il n'y a pas de caracteres speciaux
 	
+		user = authenticate(username=username,password=passwd)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect(path)
+			else:
+				pass
+				# Return a 'disabled account' error message
+		else:
+			return render_to_response('findost/loginerror.html', {'path' : path}, context_instance=RequestContext(request))		
+	else:		
+		raise Http404
 
 def log_out(request):
 	logout(request)
@@ -68,33 +72,36 @@ def showsubscribe(request):
 
 
 def subscribe(request):
-	username=request.POST['username']
-	passwd = request.POST['passwd']
-	confpasswd=request.POST['confpasswd']
-	mail = request.POST['mail']
-	#verifier qu'il n'y a pas de caracteres speciaux
-	mailalreadyused = User.objects.filter(email__exact=mail)
-	namealreadyused = User.objects.filter(email__exact=username)
-	if(mailalreadyused):
-		error = 'this mail address is already used by another user'
-		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
-	elif(namealreadyused):
-		error = 'this username is already used'
-		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
-	elif(len(username) > 12):
-		error = "Your username is too long! (12 characters maximum)"
-		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
-	elif(len(passwd) < 6):
-		error = "Your password is too short! (6 charatcers minimum)"
-		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
-	elif(passwd != confpasswd):
-		error = "you didn't type twice the same password"
-		return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+	if(request.method == 'POST'):
+		username=request.POST['username']
+		passwd = request.POST['passwd']
+		confpasswd=request.POST['confpasswd']
+		mail = request.POST['mail']
+		#verifier qu'il n'y a pas de caracteres speciaux
+		mailalreadyused = User.objects.filter(email__exact=mail)
+		namealreadyused = User.objects.filter(email__exact=username)
+		if(mailalreadyused):
+			error = 'this mail address is already used by another user'
+			return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+		elif(namealreadyused):
+			error = 'this username is already used'
+			return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+		elif(len(username) > 12):
+			error = "Your username is too long! (12 characters maximum)"
+			return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+		elif(len(passwd) < 6):
+			error = "Your password is too short! (6 charatcers minimum)"
+			return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+		elif(passwd != confpasswd):
+			error = "you didn't type twice the same password"
+			return render_to_response('findost/subform.html', {'error': error}, context_instance=RequestContext(request))
+		else:
+			User.objects.create_user(username,mail,passwd)
+			user = authenticate(username=username,password=passwd)
+			login(request, user)
+			return HttpResponseRedirect('/home')
 	else:
-		User.objects.create_user(username,mail,passwd)
-		user = authenticate(username=username,password=passwd)
-		login(request, user)
-		return HttpResponseRedirect('/home')
+		raise Http404
 
 def search(request,kind):
 	path = request.path
@@ -134,7 +141,7 @@ def find_results_set(query):
 
 
 def results(request):
-	if request.is_ajax():
+	if (request.is_ajax() and request.method == 'GET'):
 		isauth = request.user.is_authenticated()
 		query = request.GET.get('query')
 		results_setMovie, results_setShow= find_results_set(query)
@@ -175,7 +182,8 @@ def details(request,kind,id):
 		obj = get_object_or_404(Film, pk = id)
 	if(kind == 'episode'):
 		obj = get_object_or_404(Episode, pk = id)
-	return render_to_response('findost/details.html', {'obj' : obj, 'isauth':isauth, 'user':user, 'path' : path, 'message':message},context_instance=RequestContext(request))
+	comments = obj.comment_set.order_by('-postedon')
+	return render_to_response('findost/details.html', {'comments' : comments, 'obj' : obj, 'isauth':isauth, 'user':user, 'path' : path, 'message':message},context_instance=RequestContext(request))
 
 def edit(request,kind,id):
 	newtitle = request.GET.get('title')
@@ -209,7 +217,7 @@ def edit(request,kind,id):
 
 def cancel(request,kind,id):
 	isauth = request.user.is_authenticated()
-	if(isauth and id == '0'):
+	if(isauth and id == '0' and request.method == 'POST'):
 		objid=request.POST['objid']
 		if(kind == 'episode'):
 			obj = get_object_or_404(Episode, pk = objid)
@@ -243,6 +251,8 @@ def checktrack(request,kind,gid,id):
 			if(c == " "): modartist = modartist + "+"
 			if(c == "%"): modartist = modartist + "+percent+"
 			else: modartist = modartist + c
+		if(artist == 'Unknown'):
+			modartist = ''
 		request = "http://tinysong.com/s/"+ modtitle+"+"+modartist+"?format=json&limit=5&key=b3fa54409e286bd0192b9c2966767482"
 		Json=urllib2.urlopen(request).read()
 		i=0
@@ -312,7 +322,7 @@ def savechangesepisode(request,kind,id):
 	showtitle=''
 	number = ''
 	seasonnb= ''
-	if(isauth):
+	if(isauth and request.method == 'POST'):
 		message="You are logged in as " + request.user.username
 		objid=request.POST['objid']
 		obj = get_object_or_404(Episode, pk = int(objid))
@@ -363,22 +373,31 @@ def savechangesepisode(request,kind,id):
 
 			if(key.startswith('songtitle') and value):
 				songtitles[key[9:]] = value
-			if(key.startswith('songartist') and value):
+			if(key.startswith('songartist')):
 				songartists[key[10:]] = value	
 
 		for key in songtitles:
 			title = songtitles[key]
-			artistname = songartists[key]
-			if(Artist.objects.filter(name=artistname)):
-				artist = Artist.objects.get(name=artistname)
+			if (songartists[key]):
+				artistname = songartists[key]
+				if(Artist.objects.filter(name=artistname)):
+					artist = Artist.objects.get(name=artistname)
+				else:
+					artist = Artist(name=artistname)
+					artist.save()
+				if(Song.objects.filter(title=title).filter(artist = artist)):
+					song=Song.objects.filter(title=title).filter(artist = artist)[0]
+				else:
+					song = Song(title=title,artist=artist,postedby=request.user.username)
+					song.save()
+			
 			else:
-				artist = Artist(name=artistname)
-				artist.save()
-			if(Song.objects.filter(title=title).filter(artist = artist)):
-				song=Song.objects.filter(title=title).filter(artist = artist)[0]
-			else:
-				song = Song(title=title,artist=artist,postedby=request.user.username)
-				song.save()
+				if(Song.objects.filter(title=title)):
+					song=Song.objects.filter(title=title)[0]
+				else:
+					artist = Artist.objects.filter(name='Unknown')[0]
+					song = Song(title=title,artist=artist,postedby=request.user.username)
+					song.save()
 			
 			obj.songs.add(song)
 		
@@ -438,7 +457,7 @@ def savechangesepisode(request,kind,id):
 
 def savechangesfilm(request,kind,id):
 	isauth = request.user.is_authenticated()
-	if(isauth):
+	if(isauth and request.method == 'POST'):
 		message="You are logged in as " + request.user.username
 		objid=request.POST['objid']
 		obj = get_object_or_404(Film, pk = int(objid))
@@ -452,7 +471,8 @@ def savechangesfilm(request,kind,id):
 		yearout=''	
 		for key in data:
 			value = data[key]
-			value = normalize(value)
+			if(key != 'trailerurl' and key != 'imageurl'):
+				value = normalize(value)
 			for field in obj._meta.fields:
 				if(key == field.name and value):					
 					obj.__setattr__(field.name , value)
@@ -476,17 +496,26 @@ def savechangesfilm(request,kind,id):
 
 		for key in songtitles:
 			title = songtitles[key]
-			artistname = songartists[key]
-			if(Artist.objects.filter(name=artistname)):
-				artist = Artist.objects.get(name=artistname)
+			if (songartists[key]):
+				artistname = songartists[key]
+				if(Artist.objects.filter(name=artistname)):
+					artist = Artist.objects.get(name=artistname)
+				else:
+					artist = Artist(name=artistname)
+					artist.save()
+				if(Song.objects.filter(title=title).filter(artist = artist)):
+					song=Song.objects.filter(title=title).filter(artist = artist)[0]
+				else:
+					song = Song(title=title,artist=artist,postedby=request.user.username)
+					song.save()
+			
 			else:
-				artist = Artist(name=artistname)
-				artist.save()
-			if(Song.objects.filter(title=title).filter(artist = artist)):
-				song=Song.objects.filter(title=title).filter(artist = artist)[0]
-			else:
-				song = Song(title=title,artist=artist,postedby=request.user.username)
-				song.save()
+				if(Song.objects.filter(title=title)):
+					song=Song.objects.filter(title=title)[0]
+				else:
+					artist = Artist.objects.filter(name='Unknown')[0]
+					song = Song(title=title,artist=artist,postedby=request.user.username)
+					song.save()
 			
 			obj.songs.add(song)
 
@@ -526,21 +555,42 @@ def report(request,kind,id,sid):
 	if(request.user.is_authenticated()):
 		reportedby = request.user.username
 		song = get_object_or_404(Song, pk = sid)
-		song.reported=True
-		song.reportedby = reportedby
-		song.save()
-		return HttpResponseRedirect('/findost/' + kind + '/details/' + id)
+		if(not song.reported):
+			song.reported=True
+			song.reportedby = reportedby
+			song.save()
+		return HttpResponseRedirect('/findost/' + kind + '/details/' + id + '#info' + sid)
 	else: 
 		raise Http404
 
 def unreport(request,kind,id,sid):
 	if(request.user.is_authenticated()):
 		song = get_object_or_404(Song, pk = sid)
-		song.reported=False
-		song.reportedby = None
-		song.save()
-		return HttpResponseRedirect('/findost/' + kind + '/details/' + id)
+		if(song.reportedby == request.user.username):
+			song.reported=False
+			song.reportedby = None
+			song.save()
+		return HttpResponseRedirect('/findost/' + kind + '/details/' + id + '#info' + sid)
 	else: 
 		raise Http404
 	
-
+def comment(request,kind,id):
+	if(request.user.is_authenticated() and request.method == 'POST'):
+		title = request.POST['title']
+		body = request.POST['body']
+		if (title and body):
+			lastcomment = Comment.objects.order_by('-postedon')[0]
+			if (lastcomment.title != title or lastcomment.body != body or lastcomment.postedby != request.user.username):
+				c = Comment(title=title,body=body,postedby=request.user.username,postedon=datetime.datetime.now())
+				if(kind == 'film'):
+					film = get_object_or_404(Film, pk = id)
+					c.film = film
+				if(kind == 'episode'):
+					episode = get_object_or_404(Episode, pk = id)
+					c.episode = episode
+				c.save()
+			return HttpResponseRedirect('/findost/' + kind + '/details/' + id + '#showcomments')
+		else :
+			raise Http404
+	else:
+		raise Http404	

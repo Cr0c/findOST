@@ -26,8 +26,11 @@ h1 {
 
 h2 {
 	color: #2554C7;
-	font-size: 28px;  
-	padding: 11px 0;  
+	font-size: 28px;
+	line-height: 32px;  
+	padding-left: 6px; 
+	padding-top: 2px;
+	padding-bottom: 0px; 
 }  
 
 h3 {
@@ -381,3 +384,33 @@ aside {
 a.confirm {
 	margin-left: 8px;
 }
+
+.editFormShow {
+	height: 370px;
+		display: block;
+}
+
+.editFormFilm {
+	height: 330px;
+		display: block;
+}
+
+.editFormInputs {
+	display: block;
+	float: right;
+	margin-right: 20px;
+}
+
+.editFormLabels {
+	display: block;
+	float: left;
+	width: 250px;
+}
+
+.actor, .song {
+	background-color: rgba(0, 0, 0, 0.0);
+}
+
+
+
+

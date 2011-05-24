@@ -8,7 +8,6 @@
 		<title>FindOST.com | Home</title>
 </head>
 
-
 <body>
 	<header>
 		<a href='/home'><div id='header' class='center'></div></a>
@@ -64,20 +63,22 @@
 		<aside>
 			<section>
 				<header>
-					<h3>Latest movies updated</h3>
+					<div><h3>Latest movies updated</h3></div>
 				<header>
 				<ul>
 					{% for film in lastfilms %}
 					<li>
 						<section>
+							<div id="elemInLatest">
 							{% if film.imageurl %}
-							<img id='{{film.id}}' src='{{film.imageurl}}' width="50px" height="50px"/>
+							<div id="thumbsLatest" style="background-image: url('{{film.imageurl}}');"></div>
 							{% else %}
-							<img id='{{film.id}}' src='/static/img/unknown.jpg'/>
+							<div id="thumbsLatest" style="background-image: url('/static/img/unknown.jpg');"></div>
 							{% endif %}
 							<div class="description">
-							<a href="/findost/film/details/{{film.id}}" >{{ film.title }}</a><br/>
+							<a href="/findost/film/details/{{film.id}}" ><b>{{ film.title }}</b></a><br/>
 							came out in : {{film.cameouton}}
+							</div>
 							</div>
 						</section>
 					</li>
@@ -87,20 +88,22 @@
 		
 			<section>
 				<header>
-					<h3>Latest episodes updated</h3>
+					<div><h3>Latest episodes updated</h3></div>
 				</header>
 				<ul>
 					{% for episode in lastepisodes %}
 					<li>
 						<section>
-							{% if episode.imageurl %}
-							<img id='{{episode.show.id}}' src='{{episode.imageurl}}' width="50px" height="50px"/>
+							<div id="elemInLatest">
+							{% if episode.show.imageurl %}
+							<div id="thumbsLatest" style="background-image: url('{{episode.show.imageurl}}');"></div>
 							{% else %}
-							<img id='{{episode.show.id}}' src='/static/img/unknown.jpg'/>
+							<div id="thumbsLatest" style="background-image: url('/static/img/unknown.jpg')"></div>
 							{% endif %}
 							<div class='description'>
-								<a href="/findost/episode/details/{{episode.id}}" >{{ episode.show.title }}</a><br/>
+							<a href="/findost/episode/details/{{episode.id}}" ><b>{{ episode.show.title }}</b></a><br/>
 								season {{ episode.seasonnb }} episode {{ episode.number }}
+							</div>
 							</div>
 						</section>
 					</li>

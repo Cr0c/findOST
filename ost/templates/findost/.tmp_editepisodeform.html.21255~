@@ -31,124 +31,97 @@
 		<h2>Edit Information</h2>
 		<br/>
 		<p>{{message2}}</p>
-		
-		{% if id == '0' %}
-		<form action='cancel' method='post' name='cancel' id='Cancel Add'>
-			{% csrf_token %}
-			
-			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />
-			
-			<input type ='submit' value='Cancel'>
-		</form>
-		{% endif %}
-		
-		
-		
-		<form action='save' name="form" id="form" method="post">
+		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}
 
 			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />
 			
-			<div>
-			<ul id='formlabels'>
-				<li><label for="showtitle">Show Title</label></li>
-				<li><label for="startingyear">Starting Year of the Show</label></li>
-				<li><label for='seasonnb'>Episode Season Number</label></li>
-				<li><label for='number'>Episode Number</label></li>
-				<li><label for="title">Episode Title</label></li>
-				<li><label for="otitle">Original Title</label></li>
-				<li><label for="director">Director</label></li>
-				<li><label for="imageurl">Image URL</label></li>
-				<li><label for="language">Language</label></li>
-				<li><label for="genre">Genre</label></li>
-				<li><label for="cameouton">Came Out On </label></li>
-				<li><label for="showstatus">Still Running</label></li>
-			</ul>
-						
-			<ul id='forminputs'>
-			<li>
+			<label for="showtitle">Show Title</label>
 			{% if obj.show.title %}
 			<input name="showtitle" id="showtitle" type="text" value="{{obj.show.title}}" />
 			{% else %}
 			<input name="showtitle" id="showtitle" type="text" required/>			
 			{% endif %}
-			</li>			
+						
+			<br/>
 			
-			<li>
+			<label for="startingyear">Starting Year of the Show</label>
 			{% if obj.show.startingyear %}
 			<input name="startingyear" id="startingyear" type="text" value="{{obj.show.startingyear}}" />
 			{% else %}
 			<input name="startingyear" id="startingyear" type="text"/>			
 			{% endif %}
-			</li>
+			<br/>
 			
-			<li>
+			<label for='seasonnb'>Episode Season Number</label>
 			{% if obj.seasonnb %}
 			<input name='seasonnb' id='seasonnb' type="text" value="{{obj.seasonnb}}" required />
 			{% else %}
 			<input name='seasonnb' id='seasonnb' type="text" required />
 			{% endif%}			
-			</li>
+			<br/>
 			
-			<li>
+			<label for='number'>Episode Number</label>
 			{% if obj.number %}
 			<input name='number' id='number' type="text" value="{{obj.number}}" required />
 			{% else %}
 			<input name='number' id='number' type="text" required />
 			{% endif %}			
-			</li>
+			<br/>
 			
-			<li>
+			<label for="title">Episode Title</label>
 			{% if obj.title %}
 			<input name="title" id="title" type="text" value="{{obj.title}}" />
 			{% else %}
 			<input name="title" id="title" type="text"/>			
 			{% endif %}
-			</li>
+			<br/>
 			
 						
-			<li>
+			<label for="otitle">Original Title</label>
 			{% if obj.show.otitle %}
 			<input name="otitle" id="otitle" type="text" value="{{obj.show.otitle}}" />
 			{% else %}
 			<input name="otitle" id="otitle" type="text" />			
 			{% endif %}
-			</li>
 			
-			<li>
+			<br/>
+			
+			<label for="director">Director</label>
 			{% if obj.director %}
 			<input name="director" id="director" type="text" value="{{obj.director}}" />
 			{% else %}
 			<input name="director" id="director" type="text" />			
 			{% endif %}
-			</li>			
+						
+			<br/>
 			
-			
-			<li>
+						
+			<label for="imageurl">Image URL</label>
 			{% if obj.show.imageurl %}
 			<input name="imageurl" id="imageurl" type="text" value="{{obj.show.imageurl}}" />
 			{% else %}
 			<input name="imageurl" id="imageurl" type="text" />			
 			{% endif %}
-			</li>
+			<br/>
 			
-			<li>
+			<label for="language">Language</label>
 			{% if obj.show.language %}
 			<input name="language" id="language" type="text" value="{{obj.show.language}}" />
 			{% else %}
 			<input name="language" id="language" type="text" />			
 			{% endif %}
-			</li>
+			<br/>
 			
-			<li>
+			<label for="genre">Genre</label>
 			{% if obj.show.genre %}
 			<input name="genre" id="genre" type="genre" value="{{obj.show.language}}" />
 			{% else %}
 			<input name="genre" id="genre" type="text" />			
 			{% endif %}
-			</li>
+			<br/>
 			
-			<li>
+			<label for="cameouton">Came Out On </label>
 			{% if obj.cameouton %}
 				{% if obj.cameouton.day < 10 %}
 					{%if obj.cameouton.month < 10 %}
@@ -164,9 +137,9 @@
 					{% endif %}
 				{% endif %}
 			{% endif %}
-			</li>
+			<br/>
 			
-			<li>
+			<label for="showstatus">Still Running</label>
 			{% if obj.show.status == True %}
 			<input name="showstatus" id="showstatus" type="radio" value="True" Checked /> True 
 			<input name="showstatus" id="showstatus" type="radio" value="False" /> False
@@ -179,9 +152,9 @@
 			<input name="showstatus" id="showstatus" type="radio" value="False" /> False
 			{% endif %}
 			{% endif %}
-			</li>
-			</ul> 
-			</div>
+			
+			 
+			
 			<div id="actors">
 			<p>Actors</p>
 	

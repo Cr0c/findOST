@@ -190,7 +190,7 @@ def edit(request,kind,id):
 				obj=Film(title=newtitle, updatedon=datetime.datetime.now())
 				obj.save()
 				message2 = "Fill in the information of the movie you want to add"
-			return render_to_response('findost/editfilmform.html', {'message2' : message2, 'message' : message, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
+			return render_to_response('findost/editfilmform.html', {'id' : id, 'message2' : message2, 'message' : message, 'obj' : obj, 'isauth' : isauth}, context_instance=RequestContext(request))	
 		if(kind == 'episode'):
 			if(id != '0'):
 				obj = get_object_or_404(Episode, pk = id)
@@ -203,10 +203,24 @@ def edit(request,kind,id):
 				obj.updatedon=datetime.datetime.now()
 				obj.save()
 				message2 = "Fill in the information of the show you want to add"
-			return render_to_response('findost/editepisodeform.html', {'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
+			return render_to_response('findost/editepisodeform.html', {'id' : id, 'message':message, 'message2' : message2, 'obj' : obj, 'isauth' : isauth},context_instance=RequestContext(request))
 	else:
 		raise Http404
-		
+
+def cancel(request,kind,id):
+	isauth = request.user.is_authenticated()
+	if(isauth and id == '0'):
+		objid=request.POST['objid']
+		if(kind == 'episode'):
+			obj = get_object_or_404(Episode, pk = objid)
+			obj.show.delete()
+		if(kind == 'film'):
+			obj = get_object_or_404(Film, pk = objid)
+		obj.delete()
+		return HttpResponseRedirect('/home')
+	else:
+		raise Http404		
+
 def checktrack(request,kind,gid,id):
 	isauth = request.user.is_authenticated()
 	if(isauth):

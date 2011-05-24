@@ -31,6 +31,18 @@
 		<h2>Edit Information</h2>
 		<br/>
 		<p>{{message2}}</p>
+		
+		{% if id == '0' %}
+		<form action='cancel' method='post' name='cancel' id='cancel'>
+			{% csrf_token %}
+			
+			<input type="hidden" name="objid" id="objid" value="{{obj.id}}" />
+			
+			<input type ='submit' value='Cancel Add'>
+		</form>
+		{% endif %}
+		
+		
 		<form action='save' name="edit" id="edit" method="post">
 			{% csrf_token %}
 			
@@ -150,8 +162,8 @@
 			</div>
 		</form>
 		
-		<div id='temp' style='visibility:hidden;'></div>
-		<div id='temp2' style='visibility:hidden;'></div>		
+		<div id='temp' style='display:none;'></div>
+		<div id='temp2' style='display:none;'></div>		
 		<script>
 			function fillSong(title,artist){
 				$('.song').children().last().val(artist);

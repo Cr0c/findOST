@@ -4,7 +4,7 @@ from django.contrib import admin
 
 class FilmAdmin(admin.ModelAdmin):
     search_fields = ['title']
-    list_filter = ['reportedby']
+
 
 admin.site.register(Film, FilmAdmin)
 

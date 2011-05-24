@@ -42,26 +42,83 @@
 		</div>
 	</nav>
 		
-		<div>
+
+	<div>
 		<ul>
 		<br/>
 		{% if isauth %}
 		<a href='{{obj.id}}/edit'>Add more info !</a>
+		{% else %}
+		<span>Log in to Add more info </span>
 		{% endif %}
-	
-	
+		
+		<div id="detailsImage">
+		{% if obj.show.imageurl %}
+		<img src="{{obj.show.imageurl}}" height="300px">
+		{% endif %}
+		{% if obj.imageurl %}
+		<img src="{{obj.imageurl}}" width="300px">
+		{% endif %}
+		</div>
+					
 		{% if obj.show.title %}
 			<li>
 				<h3>Show : {{obj.show.title}}</h3>
 				<div id="detailsFields">season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
-				</li>
-		{% endif %}
-		{% if obj.title %}
-			<li><h3>Title : {{obj.title}}</h3></li>
+			</li>
+			{% if obj.title %}
+				<div id="detailsFields"><li><h4>Title : {{obj.title}}</h4></li></div>
+			{% endif %}
+		{% else %}
+			{% if obj.title %}
+				<li><h3>Title : {{obj.title}}</h3></li>
+			{% endif %}
 		{% endif %}
 		{% if obj.otitle %}
 			<li>Original title : {{obj.otitle}}</li>
 		{% endif %}
+		
+		{% if obj.director %}
+			<li>Director : {{obj.director}}</li>
+		{% endif %}
+		
+		{% if obj.show.director %}
+			<li>Director : {{obj.director}}</li>
+		{% endif %}
+		
+		{% if obj.producer %}
+			<li>Producer : {{obj.producer}}</li>
+		{% endif %}
+		
+		{% if obj.composer %}
+			<li>Original Music Composer : {{obj.composer}}</li>
+		{% endif %}
+
+		{% if obj.show.startingyear %}
+			<li>Starting year of the show : {{obj.show.startingyear}}</li>
+		{% endif %}
+
+		{% if obj.show.status != None %}
+			<li>Show still running : {{obj.show.status}}</li>
+		{% endif %}
+
+
+		{% if obj.trailerurl %}
+			<li><a href='{{obj.trailerurl}}'>Trailer URL</a></li>
+		{% endif %}
+
+		{% if obj.language %}
+			<li>Language : {{obj.language}}</li>
+		{% endif %}
+		
+		{% if obj.cameouton %}
+			<li>Came out on : {{obj.cameouton}}</li>
+		{% endif %}
+		
+		{% if obj.genre %}
+			<li>Genre : {{obj.genre}}</li>
+		{% endif %}
+		
 		{% if obj.main_actors.all %}
 			<li>
 				main actors :
@@ -91,40 +148,40 @@
 				<ul>
 					{% for song in obj.songs.all %}	
 						<li>
-							{{song.title}} by {{song.artist}}
+							<b>{{song.title}} by {{song.artist}}</b>
 							<span id="postedBy"><i>Song posted by {{song.postedby}}</i></span><br>						
 							{% if song.songid > 0 %}
-							<div style='display:none;' id='player{{song.songid}}'>
+							<div id="player"><div style='display:none;' id='player{{song.songid}}'>
 								<object width="492" height="40"> 
 								<param name="movie" value="http://listen.grooveshark.com/songWidget.swf"> 
 								<param name="wmode" value="window"> <param name="allowScriptAccess" value="always"> 
 								<param name="flashvars" value="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0"> 
-								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="492" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
+								<embed src="http://listen.grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="450" height="40" flashvars="hostname=cowbell.grooveshark.com&amp;songIDs={{song.songid}}&amp;style=metal&amp;p=0" allowscriptaccess="always" wmode="window">
 								</object>
 								
 								{% if isauth %}	
 									{% if user == song.reportedby %}
-									<a href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report<a>
+									<a href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report</a>
 									{% endif %}
 									{% if not song.reported %} 
 									<a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a>
 									{% endif %}
 								{% endif %}	
-							</div>	
+							</div></div>	
 												
 							<span id="playerLinks">
 								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Listen to this song !</a>	
 							</span>
 							{% if song.reported %}
-								<span>Reported by {{song.reportedby}}</span>
+								<span id="reported">Reported by {{song.reportedby}}</span>
 							{% endif %}	
 							{% else %}
 								{% if song.songid == None %}
-								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}})">Check Track Availability</a></span></span>
+
+								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}});return false;">Check Track Availability</a></span></span>
 								<div id="checked{{song.id}}"></div>
 								{% endif %}
 							{% endif %}
-							<br>
 						</li>
 						<br>						
 					{%endfor %}
@@ -166,6 +223,10 @@
 			function showlogin(){
 				$('#loginform').toggle('fast');
 			});
+			function check(gid,id){
+				$('#checked' + id).load(gid + '/' + id + '/checktrack');
+				$('#span' + id).html('');
+			}
 		</script>
 	</body>
 </html>

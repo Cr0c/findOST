@@ -280,7 +280,7 @@ aside {
 	padding-left: 0px;
 }
 
-#newsubform {
+#subform {
 	width: 400px;
 	height: 130px;
 		display: block;
@@ -364,3 +364,6 @@ aside {
 	background-size: 100%;
 }
 
+a.confirm {
+	margin-left: 8px;
+}

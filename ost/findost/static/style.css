@@ -27,8 +27,11 @@ h1 {
 
 h2 {
 	color: #2554C7;
-	font-size: 28px;  
-	padding: 11px 0;  
+	font-size: 28px;
+	line-height: 32px;  
+	padding-left: 6px; 
+	padding-top: 2px;
+	padding-bottom: 0px; 
 }  
 
 h3 {
@@ -38,7 +41,15 @@ h3 {
 	padding-left: 6px; 
 	padding-top: 2px;
 	padding-bottom: 0px;
-}  
+} 
+
+h4 {
+	color: #2554C7;
+	line-height: 22px;  
+	padding-left: 6px; 
+	padding-top: 2px;
+	padding-bottom: 0px;	
+}
 
 p {
 	color: #2554C7;
@@ -311,14 +322,14 @@ aside {
 	height: 50px;
 }
 
-#detailsFields {
+.detailsFields {
 	background-color: rgba(0, 0, 0, 0.15);
 	margin-left: 40px;
 	padding-left: 20px;
 	margin-right: 380px;
 }
 
-#detailsFields li {
+.detailsFields li {
 	margin-bottom: 5px;
 }
 
@@ -363,8 +374,44 @@ aside {
 	float:right;
 	width:300px;
 	background-size: 100%;
+	background-color: rgba(0, 0, 0, 0.0);
+}
+
+#detailsImage  img{
+	-moz-border-radius: 5px;  
+    -webkit-border-radius: 5px;
 }
 
 a.confirm {
 	margin-left: 8px;
 }
+
+.editFormShow {
+	height: 370px;
+		display: block;
+}
+
+.editFormFilm {
+	height: 330px;
+		display: block;
+}
+
+.editFormInputs {
+	display: block;
+	float: right;
+	margin-right: 20px;
+}
+
+.editFormLabels {
+	display: block;
+	float: left;
+	width: 250px;
+}
+
+.actor, .song {
+	background-color: rgba(0, 0, 0, 0.0);
+}
+
+
+
+

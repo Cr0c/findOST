@@ -49,12 +49,12 @@
 		{% if isauth %}
 		<a href='{{obj.id}}/edit'>Add more info !</a>
 		{% else %}
-		<span>Log in to Add more info </span>
+		<span>Log in to add more info </span>
 		{% endif %}
 		
 		<div id="detailsImage">
 		{% if obj.show.imageurl %}
-		<img src="{{obj.show.imageurl}}" height="300px">
+		<img src="{{obj.show.imageurl}}" width="300px">
 		{% endif %}
 		{% if obj.imageurl %}
 		<img src="{{obj.imageurl}}" width="300px">
@@ -64,10 +64,10 @@
 		{% if obj.show.title %}
 			<li>
 				<h3>Show : {{obj.show.title}}</h3>
-				<div id="detailsFields">season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
+				<div class="detailsFields">season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
 			</li>
 			{% if obj.title %}
-				<div id="detailsFields"><li><h4>Title : {{obj.title}}</h4></li></div>
+				<div class="detailsFields"><li><h4>Title : {{obj.title}}</h4></li></div>
 			{% endif %}
 		{% else %}
 			{% if obj.title %}
@@ -78,6 +78,7 @@
 			<li>Original title : {{obj.otitle}}</li>
 		{% endif %}
 		
+		<div class="detailsFields">
 		{% if obj.director %}
 			<li>Director : {{obj.director}}</li>
 		{% endif %}
@@ -141,11 +142,12 @@
 				</ul>
 			</li>
 		{% endif %}
+		</div>
 	
 		{% if obj.songs.all %}
 			<li>
 				<h4>Original Soundtrack :</h4>
-				<div id="detailsFields">
+				<div class="detailsFields">
 				<ul>
 					{% for song in obj.songs.all %}	
 						<li id='info{{song.id}}'>

@@ -54,10 +54,10 @@
 		
 		<div id="detailsImage">
 		{% if obj.show.imageurl %}
-		<img src="{{obj.show.imageurl}}" width="300px">
+		<img src="{{obj.show.imageurl}}" width="280px">
 		{% endif %}
 		{% if obj.imageurl %}
-		<img src="{{obj.imageurl}}" width="300px">
+		<img src="{{obj.imageurl}}" width="280px">
 		{% endif %}
 		</div>
 					
@@ -227,11 +227,11 @@
 					<ul>
 						{% for comment in comments %}
 						<li>
-							<div>
+							<div class="detailsFields">
 								<p>
-								<span>{{comment.title}} posted by {{comment.postedby}} :</span><br>
+								<span><b>{{comment.title}}</b></span> <span id="postedBy"><i>posted by {{comment.postedby}} :</i></span><br>
 								<span>{{comment.body}}</span><br>
-								<span>posted on : {{comment.postedon}}</span>
+								<span id="postedBy">posted on : {{comment.postedon}}</span>
 								</p>
 							</div>						
 						</li>

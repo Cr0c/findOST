@@ -372,7 +372,7 @@ aside {
 	margin-right: 20px;
 	display:block;
 	float:right;
-	width:300px;
+	width:280px;
 	background-size: 100%;
 	background-color: rgba(0, 0, 0, 0.0);
 }
@@ -409,6 +409,10 @@ a.confirm {
 }
 
 .actor, .song {
+	background-color: rgba(0, 0, 0, 0.0);
+}
+
+#comments {
 	background-color: rgba(0, 0, 0, 0.0);
 }
 

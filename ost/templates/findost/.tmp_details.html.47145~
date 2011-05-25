@@ -54,10 +54,10 @@
 		
 		<div id="detailsImage">
 		{% if obj.show.imageurl %}
-		<img id='Image' src="{{obj.show.imageurl}}">
+		<img src="{{obj.show.imageurl}}" width="280px">
 		{% endif %}
 		{% if obj.imageurl %}
-		<img id='Image' src="{{obj.imageurl}}">
+		<img src="{{obj.imageurl}}" width="280px">
 		{% endif %}
 		</div>
 					
@@ -277,25 +277,7 @@
 					}
 					return false;
 				});
-								
 			});
-			$('#Image').load(function (){
-				X=$('#Image').width();
-				Y=$('#Image').height();
-				
-				if(X>225){
-					Y=Y*225/X;	
-					X=225;
-				}
-				if(Y>350){
-					X=X*350/Y;
-					Y=350;
-				}
-				$('#Image').width(X);
-				$('#Image').height(Y);
-				
-			});
-			
 		</script>
 		<script>
 		$('.show-button').click(

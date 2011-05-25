@@ -49,12 +49,12 @@
 		{% if isauth %}
 		<a href='{{obj.id}}/edit'>Add more info !</a>
 		{% else %}
-		<span>Log in to Add more info </span>
+		<span>Log in to add more info </span>
 		{% endif %}
 		
 		<div id="detailsImage">
 		{% if obj.show.imageurl %}
-		<img src="{{obj.show.imageurl}}" height="300px">
+		<img src="{{obj.show.imageurl}}" width="300px">
 		{% endif %}
 		{% if obj.imageurl %}
 		<img src="{{obj.imageurl}}" width="300px">
@@ -64,10 +64,10 @@
 		{% if obj.show.title %}
 			<li>
 				<h3>Show : {{obj.show.title}}</h3>
-				<div id="detailsFields">season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
+				<div class="detailsFields">season : {{obj.seasonnb}}, episode : {{obj.number}}</div>		
 			</li>
 			{% if obj.title %}
-				<div id="detailsFields"><li><h4>Title : {{obj.title}}</h4></li></div>
+				<div class="detailsFields"><li><h4>Title : {{obj.title}}</h4></li></div>
 			{% endif %}
 		{% else %}
 			{% if obj.title %}
@@ -78,6 +78,7 @@
 			<li>Original title : {{obj.otitle}}</li>
 		{% endif %}
 		
+		<div class="detailsFields">
 		{% if obj.director %}
 			<li>Director : {{obj.director}}</li>
 		{% endif %}
@@ -119,35 +120,37 @@
 			<li>Genre : {{obj.genre}}</li>
 		{% endif %}
 		
-		{% if obj.main_actors.all %}
+		{% if obj.mainactors.all %}
+			<br>
 			<li>
-				main actors :
+				Main Actors :
 				<ul>
-					<li>b</li>
-					{% for actor in obj.main_actors.all %}
+					{% for actor in obj.mainactors.all %}
 						<li>{{actor.name}}</li>
 					{% endfor %}
 				</ul>
 			</li>
 		{% endif %}
-		{% if obj.show.main_actors.all %}
+		{% if obj.show.mainactors.all %}
+			<br>
 			<li>
-				main actors :
+				Main Actors :
 				<ul>
-					{% for actor in obj.show.main_actors.all %}
+					{% for actor in obj.show.mainactors.all %}
 						<li>{{actor.name}}</li>
 					{% endfor %}
 				</ul>
 			</li>
 		{% endif %}
+		</div>
 	
 		{% if obj.songs.all %}
 			<li>
 				<h4>Original Soundtrack :</h4>
-				<div id="detailsFields">
+				<div class="detailsFields">
 				<ul>
 					{% for song in obj.songs.all %}	
-						<li>
+						<li id='info{{song.id}}'>
 							<b>{{song.title}} by {{song.artist}}</b>
 							<span id="postedBy"><i>Song posted by {{song.postedby}}</i></span><br>						
 							{% if song.songid > 0 %}
@@ -196,6 +199,47 @@
 			</li>
 		{% endif %}
 		</ul>
+		
+		</div>
+		<div>
+			
+			{%if isauth %}
+			<a href="#" id="showcommentform">Add a Comment</a><br>
+			<div id="commentform" style="display:none;">
+				<form action='{{obj.id}}/comment' method='post' name='addcomment' id='addcomment'>
+					{% csrf_token %}
+					<label for='title'>Comment Title :</label>
+					<input type='text' name='title' id='title' required />
+					<br>
+					
+					<textarea name="body" id='body' cols='70' rows='5' required></textarea>
+					<br>
+					<input type='submit' value="add comment" />
+				</form>
+			</div>
+			{% else %}
+			<p>Log in to Add a Comment</p>
+			{% endif %}		
+			
+				{% if comments %}
+					<a href="#" id="showcomments">Hide Comments</a>
+					<div id="comments">
+					<ul>
+						{% for comment in comments %}
+						<li>
+							<div>
+								<p>
+								<span>{{comment.title}} posted by {{comment.postedby}} :</span><br>
+								<span>{{comment.body}}</span><br>
+								<span>posted on : {{comment.postedon}}</span>
+								</p>
+							</div>						
+						</li>
+						{% endfor %}
+					</ul>
+					</div>
+				{%endif%}
+			
 		</div>
 		
 		<script>
@@ -213,8 +257,25 @@
 		</script>
 		<script>
 			$(document).ready(function(){
-				$('#showreport').click(function (){
-					$('#reportform').toggle('fast');
+				$('#showcomments').click(function(){
+					$('#comments').toggle();
+					if($('#showcomments').html() == 'Hide Comments'){
+						$('#showcomments').html('Show Comments');
+					}
+					else{
+						$('#showcomments').html('Hide Comments');
+					}
+					return false;
+				});
+				$('#showcommentform').click(function(){
+					$('#commentform').toggle('fast');
+					if($('#showcommentform').html() == 'Add a Comment'){
+						$('#showcommentform').html('Hide Form');
+					}
+					else{
+						$('#showcommentform').html('Add a Comment');
+					}
+					return false;
 				});
 			});
 		</script>

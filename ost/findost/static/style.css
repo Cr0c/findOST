@@ -185,7 +185,7 @@ a {
 	text-decoration:none;
 }
 
-#playerLinks a {
+.playerLinks a {
 	color: #AAAAAA;
 	padding: 3px;
 	background-color: rgba(10, 10, 10, 0.30);
@@ -198,7 +198,7 @@ a:hover{
 	text-decoration:none;
 }
 
-#playerLinks a:hover {
+.playerLinks a:hover {
 	border: solid 1px;
 }
 

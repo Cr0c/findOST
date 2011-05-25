@@ -47,7 +47,7 @@
 		<ul>
 		<br/>
 		{% if isauth %}
-		<a href='{{obj.id}}/edit'>Add more info !</a>
+		<span class='playerLinks'><a href='{{obj.id}}/edit'>Edit</a></span>
 		{% else %}
 		<span>Log in to add more info </span>
 		{% endif %}
@@ -164,15 +164,15 @@
 								
 								{% if isauth %}	
 									{% if user == song.reportedby %}
-									<a href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report</a>
+									<span class='playerLinks'><a  href='{{obj.id}}/unreport/{{song.id}}'>Cancel Report</a></span>
 									{% endif %}
 									{% if not song.reported %} 
-									<a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a>
+									<span class='playerLinks'><a href='{{obj.id}}/report/{{song.id}}' >Wrong link !</a></span>
 									{% endif %}
 								{% endif %}	
 							</div></div>	
 												
-							<span id="playerLinks">
+							<span class="playerLinks">
 								<a href='#' onclick='showplayer({{song.songid}});return false;' id='link{{song.songid}}'>Listen to this song !</a>	
 							</span>
 							{% if song.reported %}
@@ -181,7 +181,7 @@
 							{% else %}
 								{% if song.songid == None %}
 
-								<span id="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}});return false;">Check Track Availability</a></span></span>
+								<span class="playerLinks"><span id='span{{song.id}}'><a href="#" onclick="check({{obj.id}},{{song.id}});return false;">Check Track Availability</a></span></span>
 								<div id="checked{{song.id}}"></div>
 								{% endif %}
 							{% endif %}

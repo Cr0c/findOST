@@ -206,6 +206,7 @@ a:hover{
 	margin-left : 40px;
 	background-color:rgba(0,0,0,0);
 }
+
 .eplist{
 	color : red;	
 	margin-left:20px;
@@ -335,11 +336,6 @@ aside {
 
 .detailsFields li {
 	margin-bottom: 5px;
-}
-
-#playerLinks {
-	float: left;	
-	margin-right: 20px;
 }
 
 #postedBy{

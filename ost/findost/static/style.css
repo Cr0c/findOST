@@ -202,6 +202,10 @@ a:hover{
 	border: solid 1px;
 }
 
+.detailsButton{
+	margin-left : 40px;
+	background-color:rgba(0,0,0,0);
+}
 .eplist{
 	color : red;	
 	margin-left:20px;

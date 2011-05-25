@@ -47,7 +47,7 @@
 		<ul>
 		<br/>
 		{% if isauth %}
-		<span class='playerLinks'><a href='{{obj.id}}/edit'>Edit</a></span>
+		<div class="detailsFields"><span class='playerLinks'><a href='{{obj.id}}/edit'>Edit</a></span></div>
 		{% else %}
 		<span>Log in to add more info </span>
 		{% endif %}
@@ -204,7 +204,7 @@
 		<div>
 			
 			{%if isauth %}
-			<a href="#" id="showcommentform">Add a Comment</a><br>
+			<div><span class="playerLinks"><a href="#" id="showcommentform">Add a Comment</a></span></div>
 			<div id="commentform" style="display:none;">
 				<form action='{{obj.id}}/comment' method='post' name='addcomment' id='addcomment'>
 					{% csrf_token %}
@@ -222,7 +222,7 @@
 			{% endif %}		
 			
 				{% if comments %}
-					<a href="#" id="showcomments">Hide Comments</a>
+					<div><span class="playerLinks"><a href="#" id="showcomments">Hide Comments</a></span></div>
 					<div id="comments">
 					<ul>
 						{% for comment in comments %}

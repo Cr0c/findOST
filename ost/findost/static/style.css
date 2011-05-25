@@ -391,9 +391,17 @@ a.confirm {
 		display: block;
 }
 
+.editFormShow ul li{
+	height: 20px;
+}
+
 .editFormFilm {
 	height: 330px;
 		display: block;
+}
+
+.editFormFilm ul li{
+	height: 20px;
 }
 
 .editFormInputs {
